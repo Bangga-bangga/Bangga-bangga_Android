@@ -34,7 +34,8 @@
                 android:layout_width="200dp"
                 android:layout_height="50dp"
                 android:ems="10"
-                android:inputType="text"/>
+                android:inputType="text"
+                android:hint="키워드를 입력하세요."/>
 
             <Button
                 android:id="@+id/input_keyword_btn"
@@ -46,14 +47,18 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/emotion_keyword"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/keyword_list_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="키워드"
+        android:orientation="vertical"
         android:layout_marginTop="30dp"
-        android:layout_below="@+id/emotion_keyword_layout"
-        android:layout_centerInParent="true"/>
+        android:layout_below="@+id/emotion_keyword_layout">
+
+        <!--        입력한 감정 키워드-->
+
+    </LinearLayout>
+
 
     <Button
         android:id="@+id/go_empty_can"
