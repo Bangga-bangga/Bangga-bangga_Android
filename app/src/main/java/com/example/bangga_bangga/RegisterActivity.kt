@@ -5,7 +5,7 @@ import android.os.PersistableBundle
 import android.provider.ContactsContract.CommonDataKinds.Nickname
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.bangga_bangga.databinding.ActivityMainBinding
+import com.example.bangga_bangga.databinding.ActivityRegisterBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,7 +26,7 @@ interface ApiService {
 class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val registerBinding = ActivityMainBinding.inflate(layoutInflater)
+        val registerBinding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(registerBinding.root)
 
         registerBinding.duplicationCheckBtn.setOnClickListener{
@@ -36,7 +36,7 @@ class RegisterActivity : AppCompatActivity() {
                 "닉네임을 입력해주세요.",
                 Toast.LENGTH_SHORT
             ).show() else{
-
+                // 입력된 비밀번호를 파라미터에 담아서 서버에 중복 검사 api 요청하기
             }
         }
     }
