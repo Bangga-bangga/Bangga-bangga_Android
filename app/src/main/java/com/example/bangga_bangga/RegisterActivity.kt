@@ -20,6 +20,7 @@ import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
+import java.util.regex.Pattern
 
 //data class NicknameData(val nickname: String)
 //
@@ -35,6 +36,24 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(registerBinding.root)
         var validate = 0
         var passwordValidate = 0
+        val emailValidation = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
+
+        fun checkEmail():Boolean{
+            val email = registerBinding.emailInput.text.toString().trim()
+            var emailCheck = registerBinding.emailVaildationCheckResult
+            val p = Pattern.matches(emailValidation, email) // 서로 패턴이 맞는지 검사
+            if (p) {
+                emailCheck.setTextColor(Color.rgb(52, 107, 235))
+                emailCheck.text = "* 유효한 이메일 형식입니다."
+                emailCheck.visibility = View.VISIBLE
+                return true
+            } else {
+                emailCheck.setTextColor(Color.rgb(250,80,42))
+                emailCheck.text = "* 정상적인 이메일 형식이 아닙니다."
+                emailCheck.visibility = View.VISIBLE
+                return false
+            }
+        }
 
 
         registerBinding.duplicationCheckBtn.setOnClickListener{
@@ -106,13 +125,11 @@ class RegisterActivity : AppCompatActivity() {
             if (nickname != "" && email != "" && password != "" && repassword != "" && age != "" && validate == 1 && passwordValidate == 1){
                 // json형식으로 서버에 회원가입 api 요청하기
             }
-
         }
         registerBinding.passwordCheckInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 //                TODO("Not yet implemented")
             }
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val password = registerBinding.passwordInput.text.toString()
                 val repassword = registerBinding.passwordCheckInput.text.toString()
@@ -133,6 +150,24 @@ class RegisterActivity : AppCompatActivity() {
             }
             override fun afterTextChanged(s: Editable?) {
 //                TODO("Not yet implemented")
+            }
+        })
+
+        registerBinding.emailInput.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                // text가 변경된 후 호출
+                // s에는 변경 후의 문자열이 담겨 있다.
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // text가 변경되기 전 호출
+                // s에는 변경 전 문자열이 담겨 있다.
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // text가 바뀔 때마다 호출된다.
+                // 우린 이 함수를 사용한다.
+                checkEmail()
             }
         })
     }
