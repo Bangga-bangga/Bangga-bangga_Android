@@ -55,7 +55,6 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
 
-
         registerBinding.duplicationCheckBtn.setOnClickListener{
             val nickname = registerBinding.nicknameInput.text.toString()
             if(nickname.isEmpty()) Toast.makeText(
@@ -170,6 +169,21 @@ class RegisterActivity : AppCompatActivity() {
                 checkEmail()
             }
         })
+        registerBinding.ageInput.addTextChangedListener(object : TextWatcher {
+            val age = registerBinding.ageInput.text.toString()
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if(age.length > 2){
+
+                }
+            }
+        })
+
     }
 //    private fun sendNicknameToServer(nickname: NicknameData){
 //        val retrofit = Retrofit.Builder()
