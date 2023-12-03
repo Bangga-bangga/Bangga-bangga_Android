@@ -63,12 +63,12 @@
                     <EditText
                         android:id="@+id/nicknameInput"
                         android:layout_width="204dp"
-                        android:layout_height="46dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="13dp"
                         android:layout_marginTop="92dp"
                         android:ems="10"
                         android:inputType="text"
-                        android:text="닉네임 입력"
+                        android:hint="닉네임 입력"
                         android:textColor="#c0c0c0"
                         android:textSize="13dp"
                         app:layout_constraintBottom_toTopOf="@+id/duplicationCheckResultText"
@@ -76,44 +76,44 @@
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.002" />
+                        app:layout_constraintVertical_bias="0.0" />
 
                     <TextView
-                        android:id="@+id/vaildationCheckResultText"
+                        android:id="@+id/emailVaildationCheckResult"
                         android:layout_width="204dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="14dp"
+                        android:layout_marginStart="16dp"
                         android:layout_marginEnd="128dp"
                         android:layout_marginBottom="3dp"
                         android:text="이메일 입력 유효성 검사 결과 문구"
                         android:textColor="#ec5353"
                         android:visibility="invisible"
-                        app:layout_constraintBottom_toTopOf="@+id/emailText6"
+                        app:layout_constraintBottom_toTopOf="@+id/passwordCheckText"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress" />
+                        app:layout_constraintTop_toBottomOf="@+id/emailInput" />
 
                     <TextView
-                        android:id="@+id/vaildationCheckResultText5"
+                        android:id="@+id/passwordVaildationCheckResult"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="14dp"
+                        android:layout_marginStart="16dp"
                         android:layout_marginEnd="131dp"
                         android:layout_marginBottom="3dp"
                         android:text="비밀번호 입력 유효성 검사 결과 문구"
                         android:textColor="#ec5353"
                         android:visibility="invisible"
-                        app:layout_constraintBottom_toTopOf="@+id/textView4"
+                        app:layout_constraintBottom_toTopOf="@+id/passwordCheckText"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword3" />
+                        app:layout_constraintTop_toBottomOf="@+id/passwordCheckInput" />
 
                     <TextView
-                        android:id="@+id/vaildationCheckResultText6"
+                        android:id="@+id/repasswordVaildationCheckResult"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="14dp"
+                        android:layout_marginStart="16dp"
                         android:layout_marginEnd="131dp"
                         android:layout_marginBottom="3dp"
                         android:text="비밀번호 일치 검사 결과 문구"
@@ -123,21 +123,21 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.057"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword5" />
+                        app:layout_constraintTop_toBottomOf="@+id/passwordCheckInput" />
 
                     <TextView
-                        android:id="@+id/vaildationCheckResultText7"
+                        android:id="@+id/ageVaildationCheckResult"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="14dp"
-                        android:text="비밀번호 일치 검사 결과 문구"
+                        android:layout_marginStart="16dp"
+                        android:text="나이 입력 유효성 검사 결과 문구"
                         android:textColor="#ec5353"
                         android:visibility="invisible"
-                        app:layout_constraintBottom_toTopOf="@+id/button"
+                        app:layout_constraintBottom_toTopOf="@+id/registerBtn"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.012"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/editTextNumber2" />
+                        app:layout_constraintTop_toBottomOf="@+id/ageInput" />
 
                     <TextView
                         android:id="@+id/nicknameText"
@@ -159,7 +159,7 @@
                         android:id="@+id/duplicationCheckResultText"
                         android:layout_width="204dp"
                         android:layout_height="21dp"
-                        android:layout_marginStart="14dp"
+                        android:layout_marginStart="16dp"
                         android:layout_marginEnd="127dp"
                         android:layout_marginBottom="3dp"
                         android:text="중복 확인 결과"
@@ -181,10 +181,11 @@
                         android:layout_marginBottom="49dp"
                         android:backgroundTint="#FFD964"
                         android:text="중복 확인"
-                        app:layout_constraintBottom_toTopOf="@+id/editTextTextEmailAddress"
+                        app:layout_constraintBottom_toTopOf="@+id/emailInput"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/nicknameInput"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0" />
 
                     <TextView
                         android:id="@+id/emailText"
@@ -195,14 +196,14 @@
                         android:layout_marginEnd="294dp"
                         android:text="이메일"
                         android:textSize="15dp"
-                        app:layout_constraintBottom_toTopOf="@+id/editTextTextEmailAddress"
+                        app:layout_constraintBottom_toTopOf="@+id/emailInput"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/duplicationCheckResultText" />
 
                     <TextView
-                        android:id="@+id/emailText6"
+                        android:id="@+id/passwordText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="14dp"
@@ -210,83 +211,84 @@
                         android:layout_marginEnd="294dp"
                         android:text="비밀번호"
                         android:textSize="15dp"
-                        app:layout_constraintBottom_toTopOf="@+id/editTextTextPassword3"
+                        app:layout_constraintBottom_toTopOf="@+id/passwordInput"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/vaildationCheckResultText" />
+                        app:layout_constraintTop_toBottomOf="@+id/emailVaildationCheckResult" />
 
                     <EditText
-                        android:id="@+id/editTextTextEmailAddress"
+                        android:id="@+id/emailInput"
                         android:layout_width="320dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="13dp"
                         android:layout_marginEnd="13dp"
                         android:ems="10"
                         android:inputType="textEmailAddress"
-                        android:text="이메일 입력"
+                        android:hint="이메일 입력"
                         android:textColor="#c0c0c0"
                         android:textSize="13dp"
-                        app:layout_constraintBottom_toTopOf="@+id/vaildationCheckResultText"
+                        app:layout_constraintBottom_toTopOf="@+id/emailVaildationCheckResult"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.666"
+                        app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/emailText" />
 
                     <Button
-                        android:id="@+id/button"
+                        android:id="@+id/registerBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="242dp"
                         android:layout_marginTop="12dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="15dp"
+                        android:backgroundTint="#FFD964"
                         android:text="회원가입"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/editTextNumber2" />
+                        app:layout_constraintTop_toBottomOf="@+id/ageInput" />
 
                     <EditText
-                        android:id="@+id/editTextTextPassword3"
+                        android:id="@+id/passwordInput"
                         android:layout_width="319dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="13dp"
                         android:layout_marginEnd="13dp"
                         android:ems="10"
                         android:inputType="textPassword"
-                        app:layout_constraintBottom_toTopOf="@+id/vaildationCheckResultText5"
+                        app:layout_constraintBottom_toTopOf="@+id/passwordVaildationCheckResult"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/emailText6" />
+                        app:layout_constraintTop_toBottomOf="@+id/passwordText" />
 
                     <TextView
-                        android:id="@+id/textView4"
+                        android:id="@+id/passwordCheckText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="14dp"
                         android:layout_marginTop="3dp"
                         android:layout_marginEnd="254dp"
                         android:text="비밀번호 확인"
-                        app:layout_constraintBottom_toTopOf="@+id/editTextTextPassword5"
+                        app:layout_constraintBottom_toTopOf="@+id/passwordCheckInput"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/vaildationCheckResultText5" />
+                        app:layout_constraintTop_toBottomOf="@+id/passwordVaildationCheckResult" />
 
                     <EditText
-                        android:id="@+id/editTextTextPassword5"
+                        android:id="@+id/passwordCheckInput"
                         android:layout_width="321dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="13dp"
                         android:layout_marginEnd="13dp"
                         android:ems="10"
                         android:inputType="textPassword"
-                        app:layout_constraintBottom_toTopOf="@+id/vaildationCheckResultText6"
+                        app:layout_constraintBottom_toTopOf="@+id/repasswordVaildationCheckResult"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+                        app:layout_constraintTop_toBottomOf="@+id/passwordCheckText" />
 
                     <TextView
                         android:id="@+id/textView6"
@@ -296,13 +298,13 @@
                         android:layout_marginTop="3dp"
                         android:layout_marginEnd="309dp"
                         android:text="나이"
-                        app:layout_constraintBottom_toTopOf="@+id/editTextNumber2"
+                        app:layout_constraintBottom_toTopOf="@+id/ageInput"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/vaildationCheckResultText6" />
+                        app:layout_constraintTop_toBottomOf="@+id/repasswordVaildationCheckResult" />
 
                     <EditText
-                        android:id="@+id/editTextNumber2"
+                        android:id="@+id/ageInput"
                         android:layout_width="321dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="13dp"
@@ -310,10 +312,10 @@
                         android:layout_marginEnd="15dp"
                         android:ems="10"
                         android:inputType="number"
-                        android:text="나이 입력"
+                        android:hint="나이 입력"
                         android:textColor="#c0c0c0"
                         android:textSize="13dp"
-                        app:layout_constraintBottom_toTopOf="@+id/vaildationCheckResultText7"
+                        app:layout_constraintBottom_toTopOf="@+id/ageVaildationCheckResult"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView6" />
