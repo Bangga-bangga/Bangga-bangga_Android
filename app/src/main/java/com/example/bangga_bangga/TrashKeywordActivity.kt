@@ -1,6 +1,9 @@
 package com.example.bangga_bangga
 
+import android.graphics.Color
 import android.os.Bundle
+import android.util.TypedValue
+import android.view.Gravity
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -24,9 +27,14 @@ class TrashKeywordActivity : AppCompatActivity() {
             if (keyword.isNotEmpty()) {
                 keywordList.add(keyword)
 
-                val keywordTextView = TextView(this, null, R.style.keywordList)
+                val keywordTextView = TextView(this)
                 keywordTextView.text = keyword
+                keywordTextView.setTextColor(Color.parseColor("#2A2500"))
+                keywordTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30f)
+                keywordTextView.setGravity(Gravity.CENTER)
+                keywordTextView.setPadding(0, 15, 0, 15)
                 keywordListLayout.addView(keywordTextView)
+
             }
 
             editTextEmotionKeyword.text.clear()

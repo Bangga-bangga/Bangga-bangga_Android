@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="keywordList">
-        <item name="android:textSize">100dp</item>
-        <item name="color">#2A2500</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:layout_gravity">center_horizontal</item>
-    </style>
-</resources>
