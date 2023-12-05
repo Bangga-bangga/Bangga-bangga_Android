@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FEEEB2"
+    >
+
+    <LinearLayout
+        android:id="@+id/emotion_keyword_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingTop="60dp"
+        android:paddingBottom="20dp"
+        android:background="#FFD964
+">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="마음 속의 지우고 싶은 감정 키워드를 적어보세요 :)" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+
+            <EditText
+                android:id="@+id/editText_emotion_keyword"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:ems="10"
+                android:inputType="text"
+                android:hint="키워드를 입력하세요."/>
+
+            <Button
+                android:id="@+id/input_keyword_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="입력" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/keyword_list_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/emotion_keyword_layout">
+
+        <!--        입력한 감정 키워드-->
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/go_empty_can"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="감정 비우러 가기"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="100dp" />
+
+</RelativeLayout>
