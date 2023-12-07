@@ -34,7 +34,7 @@ class TrashKeywordActivity : AppCompatActivity() {
                 keywordTextView.text = keyword
                 keywordTextView.setTextColor(Color.parseColor("#2A2500"))
                 keywordTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30f)
-                keywordTextView.setGravity(Gravity.CENTER)
+                keywordTextView.gravity = Gravity.CENTER
                 keywordTextView.setPadding(0, 15, 0, 15)
                 keywordListLayout.addView(keywordTextView)
 
