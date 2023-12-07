@@ -29,6 +29,7 @@
 <!--            </intent-filter>-->
         </activity>
         <activity android:name=".TrashKeywordActivity" />
+        <activity android:name=".LoginActivity" />
 
     </application>
 
