@@ -18,9 +18,9 @@ import retrofit2.Response
 
 class LoginActivity  : AppCompatActivity()  {
 
-    private lateinit var login_email: EditText
-    private lateinit var login_password: EditText
-    private lateinit var login_button: Button
+    private lateinit var email: EditText
+    private lateinit var password: EditText
+    private lateinit var loginButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,13 +31,13 @@ class LoginActivity  : AppCompatActivity()  {
         supportActionBar?.setDisplayHomeAsUpEnabled(true) // 뒤로가기 버튼, 디폴트로 true만 해도 백버튼이 생김
         supportActionBar?.title = ""
 
-        login_email = findViewById(R.id.login_email)
-        login_password = findViewById(R.id.login_password)
-        login_button = findViewById(R.id.login_button)
+        email = findViewById(R.id.login_email)
+        password = findViewById(R.id.login_password)
+        loginButton = findViewById(R.id.login_button)
         // ==로그인 버튼 클릭 시==
-        login_button.setOnClickListener {
-            val username = login_email.text.toString().trim()//trim : 문자열 공백제거
-            val password = login_password.text.toString().trim()
+        loginButton.setOnClickListener {
+            val username = email.text.toString().trim()//trim : 문자열 공백제거
+            val password = password.text.toString().trim()
 
             // == 백엔드 통신 부분 ==
             val api = Api.create()
