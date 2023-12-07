@@ -26,4 +26,10 @@
         android:text="Button" />
 
 
+    <Button
+        android:id="@+id/login_page_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="로그인 화면으로 가기" />
+
 </LinearLayout>

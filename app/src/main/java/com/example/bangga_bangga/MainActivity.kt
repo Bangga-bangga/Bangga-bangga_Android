@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
         /** 툴바 코드 끗 아래 onOptionsItemSelected함수 또한 자신의 파일에 붙여넣기 **/
 
         val convertPageBtn = findViewById<Button>(R.id.convert_page_btn)
+        val loginPageBtn = findViewById<Button>(R.id.login_page_btn)
 
         fun convertToTrashKeywordActivity() {
             val intent = Intent(this, TrashKeywordActivity::class.java)
@@ -29,6 +30,15 @@ class MainActivity : AppCompatActivity() {
 
         convertPageBtn.setOnClickListener {
             convertToTrashKeywordActivity()
+        }
+
+        fun convertToLoginActivity() {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
+
+        loginPageBtn.setOnClickListener {
+            convertToLoginActivity()
         }
     }
 
