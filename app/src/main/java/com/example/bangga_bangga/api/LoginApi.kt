@@ -1,6 +1,6 @@
 package com.example.bangga_bangga.api
 
-import com.example.bangga_bangga.model.LoginBackendResponse
+import com.example.bangga_bangga.model.LoginResponse
 import com.example.bangga_bangga.model.UserModel
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -8,16 +8,14 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
-import retrofit2.http.Headers
 import retrofit2.http.POST
-import retrofit2.http.Query
 
 interface Api {
     //@Headers("app/json")
     @POST("/login")
     fun userLogin(
         @Body jsonParams: UserModel,
-    ): Call<LoginBackendResponse>
+    ): Call<LoginResponse>
 
 
     companion object {

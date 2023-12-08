@@ -8,7 +8,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.bangga_bangga.api.Api
-import com.example.bangga_bangga.model.LoginBackendResponse
+import com.example.bangga_bangga.model.LoginResponse
 import com.example.bangga_bangga.model.UserModel
 import android.util.Log
 import android.widget.Toast
@@ -43,10 +43,10 @@ class LoginActivity  : AppCompatActivity()  {
             val api = Api.create()
             val data = UserModel(username, password)
 
-            api.userLogin(data).enqueue(object : Callback<LoginBackendResponse> {
+            api.userLogin(data).enqueue(object : Callback<LoginResponse> {
                 override fun onResponse(
-                    call: Call<LoginBackendResponse>,
-                    response: Response<LoginBackendResponse>
+                    call: Call<LoginResponse>,
+                    response: Response<LoginResponse>
                 ) {
                     Log.d("로그인 통신 성공",response.toString())
                     Log.d("로그인 통신 성공", response.body().toString())
@@ -99,7 +99,7 @@ class LoginActivity  : AppCompatActivity()  {
                     }
                 }
 
-                override fun onFailure(call: Call<LoginBackendResponse>, t: Throwable) {
+                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                     // 실패
                     Log.d("로그인 통신 실패",t.message.toString())
                     Log.d("로그인 통신 실패","fail")
