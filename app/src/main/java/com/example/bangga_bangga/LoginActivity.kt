@@ -7,7 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import com.example.bangga_bangga.api.Api
+import com.example.bangga_bangga.api.LoginApi
 import com.example.bangga_bangga.model.LoginResponse
 import com.example.bangga_bangga.model.UserModel
 import android.util.Log
@@ -40,10 +40,10 @@ class LoginActivity  : AppCompatActivity()  {
             val password = password.text.toString().trim()
 
             // == 백엔드 통신 부분 ==
-            val api = Api.create()
+            val loginApi = LoginApi.create()
             val data = UserModel(username, password)
 
-            api.userLogin(data).enqueue(object : Callback<LoginResponse> {
+            loginApi.userLogin(data).enqueue(object : Callback<LoginResponse> {
                 override fun onResponse(
                     call: Call<LoginResponse>,
                     response: Response<LoginResponse>
