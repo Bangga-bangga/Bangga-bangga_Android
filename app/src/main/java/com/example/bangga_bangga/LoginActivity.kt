@@ -58,8 +58,14 @@ class LoginActivity  : AppCompatActivity()  {
                             // Authorization 토큰 값 가져오기
                             val authToken = response.headers()["Authorization"]
                             saveAuthToken(authToken)
-                            // 획득한 토큰 출력
+
+                            // category 값 가져오기
+                            val category = response.body()?.category
+                            saveCategory(category)
+
+                            // 획득한 토큰, 카테고리 출력
                             Log.d("획득한 토큰", authToken ?: "토큰이 없습니다.")
+                            Log.d("획득한 카테고리", category ?: "카테고리가 없습니다.")
 
                             Toast.makeText(this@LoginActivity, "로그인 성공", Toast.LENGTH_LONG).show()
                             convertToMainActivity()
@@ -132,6 +138,14 @@ class LoginActivity  : AppCompatActivity()  {
         val editToken = prefToken.edit()
         editToken.putString("token", token)
         editToken.apply()
+    }
+
+    // Shared Preference에 카테고리 저장 함수
+    private fun saveCategory(category: String?) {
+        val prefCategory = getSharedPreferences("userCategory", MODE_PRIVATE)
+        val editCategory = prefCategory.edit()
+        editCategory.putString("category", category)
+        editCategory.apply()
     }
 }
 
