@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         val convertPageBtn = findViewById<Button>(R.id.convert_page_btn)
         val loginPageBtn = findViewById<Button>(R.id.login_page_btn)
         val startPageBtn = findViewById<Button>(R.id.start_page_btn)
+        val newpostPageBtn = findViewById<Button>(R.id.newpost_page_btn)
 
         fun convertToTrashKeywordActivity() {
             val intent = Intent(this, TrashKeywordActivity::class.java)
@@ -49,6 +50,15 @@ class MainActivity : AppCompatActivity() {
 
         startPageBtn.setOnClickListener {
             convertToStartActivity()
+        }
+
+        fun convertToNewpostActivity() {
+            val intent = Intent(this, NewPostActivity::class.java)
+            startActivity(intent)
+        }
+
+        newpostPageBtn.setOnClickListener {
+            convertToNewpostActivity()
         }
     }
 

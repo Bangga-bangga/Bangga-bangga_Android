@@ -7,8 +7,8 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import com.example.bangga_bangga.api.Api
-import com.example.bangga_bangga.model.LoginBackendResponse
+import com.example.bangga_bangga.api.LoginApi
+import com.example.bangga_bangga.model.LoginResponse
 import com.example.bangga_bangga.model.UserModel
 import android.util.Log
 import android.widget.Toast
@@ -40,13 +40,13 @@ class LoginActivity  : AppCompatActivity()  {
             val password = password.text.toString().trim()
 
             // == 백엔드 통신 부분 ==
-            val api = Api.create()
+            val loginApi = LoginApi.create()
             val data = UserModel(username, password)
 
-            api.userLogin(data).enqueue(object : Callback<LoginBackendResponse> {
+            loginApi.userLogin(data).enqueue(object : Callback<LoginResponse> {
                 override fun onResponse(
-                    call: Call<LoginBackendResponse>,
-                    response: Response<LoginBackendResponse>
+                    call: Call<LoginResponse>,
+                    response: Response<LoginResponse>
                 ) {
                     Log.d("로그인 통신 성공",response.toString())
                     Log.d("로그인 통신 성공", response.body().toString())
@@ -58,8 +58,14 @@ class LoginActivity  : AppCompatActivity()  {
                             // Authorization 토큰 값 가져오기
                             val authToken = response.headers()["Authorization"]
                             saveAuthToken(authToken)
-                            // 획득한 토큰 출력
+
+                            // category 값 가져오기
+                            val category = response.body()?.category
+                            saveCategory(category)
+
+                            // 획득한 토큰, 카테고리 출력
                             Log.d("획득한 토큰", authToken ?: "토큰이 없습니다.")
+                            Log.d("획득한 카테고리", category ?: "카테고리가 없습니다.")
 
                             Toast.makeText(this@LoginActivity, "로그인 성공", Toast.LENGTH_LONG).show()
                             convertToMainActivity()
@@ -99,7 +105,7 @@ class LoginActivity  : AppCompatActivity()  {
                     }
                 }
 
-                override fun onFailure(call: Call<LoginBackendResponse>, t: Throwable) {
+                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                     // 실패
                     Log.d("로그인 통신 실패",t.message.toString())
                     Log.d("로그인 통신 실패","fail")
@@ -132,6 +138,14 @@ class LoginActivity  : AppCompatActivity()  {
         val editToken = prefToken.edit()
         editToken.putString("token", token)
         editToken.apply()
+    }
+
+    // Shared Preference에 카테고리 저장 함수
+    private fun saveCategory(category: String?) {
+        val prefCategory = getSharedPreferences("userCategory", MODE_PRIVATE)
+        val editCategory = prefCategory.edit()
+        editCategory.putString("category", category)
+        editCategory.apply()
     }
 }
 

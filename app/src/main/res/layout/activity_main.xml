@@ -38,4 +38,10 @@
         android:layout_height="wrap_content"
         android:text="시작 화면으로 가기" />
 
+    <Button
+        android:id="@+id/newpost_page_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="게시긓 작성 화면으로 가기" />
+
 </LinearLayout>
