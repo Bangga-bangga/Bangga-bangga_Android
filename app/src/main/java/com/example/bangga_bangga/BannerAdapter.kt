@@ -13,7 +13,11 @@ import com.example.bangga_bangga.databinding.BannerItemBinding
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.bangga_bangga.databinding.ActivityRegisterBinding
 
-class BannerAdapter(private val bannerList: Array<Array<String>>) : RecyclerView.Adapter<BannerAdapter.BannerViewHolder>(){
+//interface OnBannerClickListener {
+//    fun onBannerClick(position: Int)
+//}
+
+class BannerAdapter(private val bannerList: Array<Array<String>>, private var listener: OnBannerClickListener) : RecyclerView.Adapter<BannerAdapter.BannerViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : BannerViewHolder {
         val binding = BannerItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -21,10 +25,23 @@ class BannerAdapter(private val bannerList: Array<Array<String>>) : RecyclerView
     }
     override fun getItemCount(): Int = Int.MAX_VALUE
     override fun onBindViewHolder(holder: BannerViewHolder, position: Int) {
-        val (text, color) = bannerList[position%10]
+        val (text, color) = bannerList[position % bannerList.size]
         holder.binding.bannerText.text = text
         holder.binding.bannerText.setBackgroundColor(color.toColorInt())
+        holder.binding.root.setOnClickListener{
+            listener.onBannerClick(position)
+        }
     }
-    inner class BannerViewHolder(val binding:BannerItemBinding) : RecyclerView.ViewHolder(binding.root)
+//    inner class BannerViewHolder(val binding:BannerItemBinding) : RecyclerView.ViewHolder(binding.root)
 
+    fun setOnBannerClickListener(listener: OnBannerClickListener) {
+        this.listener = listener
+    }
+    inner class BannerViewHolder(val binding: BannerItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.root.setOnClickListener {
+                listener.onBannerClick(adapterPosition % bannerList.size)
+            }
+        }
+    }
 }
