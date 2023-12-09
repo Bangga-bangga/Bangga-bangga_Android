@@ -47,6 +47,13 @@ class HomeActivity : AppCompatActivity(), OnBannerClickListener {
                 }
             })
         }
+        homeBinding.imageView.setOnClickListener {
+            // 페이지를 새로고침하는 코드
+            val intent = Intent(this, HomeActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+            startActivity(intent)
+            finish() // 현재 액티비티를 종료하여 새로운 액티비티를 열 때 새로고침 효과
+        }
     }
     private fun autoScrollStart(intervalTime: Long){
         myHandler.removeMessages(0)
