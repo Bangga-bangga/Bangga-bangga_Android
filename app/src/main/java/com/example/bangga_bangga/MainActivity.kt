@@ -24,6 +24,8 @@ class MainActivity : AppCompatActivity() {
         val loginPageBtn = findViewById<Button>(R.id.login_page_btn)
         val startPageBtn = findViewById<Button>(R.id.start_page_btn)
         val newpostPageBtn = findViewById<Button>(R.id.newpost_page_btn)
+        val registerPageBtn = findViewById<Button>(R.id.register_page_btn)
+        val homePageBtn = findViewById<Button>(R.id.home_page_btn)
 
         fun convertToTrashKeywordActivity() {
             val intent = Intent(this, TrashKeywordActivity::class.java)
@@ -60,6 +62,26 @@ class MainActivity : AppCompatActivity() {
         newpostPageBtn.setOnClickListener {
             convertToNewpostActivity()
         }
+
+        fun convertToRegisterActivity() {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+        }
+
+        registerPageBtn.setOnClickListener {
+            convertToRegisterActivity()
+        }
+
+        fun convertToHomeActivity() {
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+        }
+
+        homePageBtn.setOnClickListener {
+            convertToHomeActivity()
+        }
+
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
