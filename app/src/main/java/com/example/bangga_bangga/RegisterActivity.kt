@@ -6,6 +6,7 @@ import android.os.PersistableBundle
 import android.provider.ContactsContract.CommonDataKinds.Nickname
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -13,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.text.isDigitsOnly
 import com.example.bangga_bangga.databinding.ActivityRegisterBinding
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -21,15 +23,47 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 import java.util.regex.Pattern
 
-//data class NicknameData(val nickname: String)
-//
-//interface ApiService {
-//    @POST("your_endpoint_here") // 서버의 엔드포인트 URL을 입력해야 합니다.
-//    fun postNickname(@Body nickname:  NicknameData): Call<Void>
-//}
+data class NicknameValidationResponse(
+    val result: String?,
+    val code: Int?,
+    val message: String?,
+    val details: String?
+)
+data class RegisterRequest(
+    val email: String,
+    val password: String,
+    val nickname: String,
+    val age: Int
+)
+data class RegisterResponse(
+    val result: String?,
+    val type: String?,
+    val title: String?,
+    val status: Int?,
+    val detail: String?,
+    val instance: String?
+)
+
+interface NicknameCheckService {
+    @GET("/sign-up/exists") // 서버의 엔드포인트 URL을 입력해야 합니다.
+    fun checkNickname(
+        @Query("nickname") nickname: String
+    ): Call<NicknameValidationResponse>
+}
+
+interface RegisterService {
+    @POST("/sign-up") // 서버의 엔드포인트 URL을 입력해야 합니다.
+    fun signUp(
+        @Body request: RegisterRequest
+    ): Call<RegisterResponse>
+}
+
+
 
 class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,8 +71,8 @@ class RegisterActivity : AppCompatActivity() {
         val registerBinding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(registerBinding.root)
 
-        var validate = 0
-        var passwordValidate = 0
+        var nicknameValidation = 0
+        var passwordValidation = 0
         val emailValidation = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
 
         /** 툴바 생성 코드**/
@@ -64,13 +98,60 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
 
+        // Retrofit 객체 생성
+        val retrofit = Retrofit.Builder()
+            .baseUrl("http://ec2-13-125-135-255.ap-northeast-2.compute.amazonaws.com:8080") // 서버 기본 URL
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        // API 서비스 생성
+        val apiService = retrofit.create(NicknameCheckService::class.java)
+
+
         registerBinding.duplicationCheckBtn.setOnClickListener{
             val nickname = registerBinding.nicknameInput.text.toString()
+            var nicknameCheck = registerBinding.duplicationCheckResultText
             if(nickname.isEmpty()) Toast.makeText(
                 this@RegisterActivity,
                 "닉네임을 입력해주세요.",
                 Toast.LENGTH_SHORT
             ).show() else{
+                // API 요청 전달할 데이터 준비
+//                val nicknameData = NicknameData(nickname)
+
+                // API 요청 보내기
+                apiService.checkNickname(nickname).enqueue(object : Callback<NicknameValidationResponse> {
+                    override fun onResponse(
+                        call: Call<NicknameValidationResponse>,
+                        response: Response<NicknameValidationResponse>
+                    ) {
+                        if (response.isSuccessful) {
+                            Log.d("tag", "서버 응답왓음요")
+                            val nicknameResponse = response.body()
+                            if (nicknameResponse != null) {
+                                if (nicknameResponse.result != null && nicknameResponse.result == "중복되지 않은 닉네임입니다.") {
+                                    nicknameCheck.text = "* 사용 가능한 닉네임입니다."
+                                    nicknameCheck.visibility = View.VISIBLE
+                                    nicknameCheck.setTextColor(Color.rgb(52, 107, 235))
+                                    nicknameValidation = 1
+                                } else {
+                                    nicknameCheck.text = "* 이미 존재하는 닉네임입니다."
+                                    nicknameCheck.visibility = View.VISIBLE
+                                    nicknameCheck.setTextColor(Color.rgb(250,80,42))
+                                    nicknameValidation = 0
+                                }
+                            }
+                        } else {
+                            Log.d("tag", "서버 응답 안왓음요")
+                            // 서버 응답에 실패한 경우
+                            // 실패 이유에 따라 처리
+                        }
+                    }
+                    override fun onFailure(call: Call<NicknameValidationResponse>, t: Throwable) {
+                        // 네트워크 오류 등으로 인한 요청 실패 처리
+                    }
+                })
+
                 // 입력된 비밀번호를 파라미터에 담아서 서버에 중복 검사 api 요청하기
                 // 성공시 -> "사용 가능한 닉네임입니다" 띄우기 + vaildation을 1로 바꾸기
                 // 실패시 -> "사용 불가능한 닉네임입니다" 띄우기
@@ -130,7 +211,7 @@ class RegisterActivity : AppCompatActivity() {
                 ageCheck.visibility = View.INVISIBLE
             }
 
-            if (nickname != "" && email != "" && password != "" && repassword != "" && age != "" && validate == 1 && passwordValidate == 1){
+            if (nickname != "" && email != "" && password != "" && repassword != "" && age != "" && nicknameValidation == 1 && passwordValidation == 1){
                 // json형식으로 서버에 회원가입 api 요청하기
             }
         }
@@ -144,13 +225,13 @@ class RegisterActivity : AppCompatActivity() {
                 var repasswordCheck = registerBinding.repasswordVaildationCheckResult
                 if (password != "" && repassword != ""){
                     if(password != repassword){
-                        passwordValidate = 0
+                        passwordValidation = 0
                         repasswordCheck.setTextColor(Color.rgb(250,80,42))
                         repasswordCheck.text = "* 비밀번호가 일치하지 않습니다."
                         repasswordCheck.visibility = View.VISIBLE
                     } else {
                         repasswordCheck.setTextColor(Color.rgb(52, 107, 235))
-                        passwordValidate = 1
+                        passwordValidation = 1
                         repasswordCheck.text = "* 비밀번호가 일치합니다."
                         repasswordCheck.visibility = View.VISIBLE
                     }
