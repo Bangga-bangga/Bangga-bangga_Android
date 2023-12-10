@@ -62,6 +62,7 @@ class HomeActivity : AppCompatActivity(), OnBannerClickListener {
                         1 -> transaction.replace(R.id.frameLayout, FragmentOldTab())
                         2 -> transaction.replace(R.id.frameLayout, FragmentMyPageTab())
                     }
+                    transaction.commit()
                 }
             }
         }
@@ -96,6 +97,8 @@ class HomeActivity : AppCompatActivity(), OnBannerClickListener {
             val intent = Intent(this, NewPostActivity::class.java)
             startActivity(intent)
         }
+
+
 
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -132,9 +135,7 @@ class HomeActivity : AppCompatActivity(), OnBannerClickListener {
             }
         }
     }
-    private fun incrementCurrentPosition() {
-        currentPosition++
-    }
+
     // 다른 페이지 갔다가 돌아오면 다시 스크롤 시작
     override fun onResume() {
         super.onResume()
