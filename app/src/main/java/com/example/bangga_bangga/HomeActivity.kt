@@ -10,7 +10,9 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.bangga_bangga.databinding.ActivityHomeBinding
 //import java.util.logging.Handler
 import android.os.Handler
+import android.view.MenuItem
 import android.widget.ImageView
+import androidx.appcompat.widget.Toolbar
 
 interface OnBannerClickListener {
     fun onBannerClick(position: Int)
@@ -37,6 +39,12 @@ class HomeActivity : AppCompatActivity(), OnBannerClickListener {
         // 탭2,3번 이미지 변경하기
         val tabSelectors = intArrayOf(R.drawable.selector1, R.drawable.selector1, R.drawable.selector1)
 
+        /** 툴바 생성 코드**/
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true) // 뒤로가기 버튼, 디폴트로 true만 해도 백버튼이 생김
+        supportActionBar?.title = ""
+
         for(i in tabSelectors.indices) {
             val tab = tabLayout.newTab()
             tabLayout.addTab(tab, false)
@@ -57,8 +65,6 @@ class HomeActivity : AppCompatActivity(), OnBannerClickListener {
                 }
             }
         }
-
-
 
         val bannerAdapter = BannerAdapter(getBannerList(), this)
         bannerAdapter.setOnBannerClickListener(this)
@@ -86,7 +92,21 @@ class HomeActivity : AppCompatActivity(), OnBannerClickListener {
             startActivity(intent)
             finish() // 현재 액티비티를 종료하여 새로운 액티비티를 열 때 새로고침 효과
         }
+        homeBinding.writePostBtn.setOnClickListener{
+            val intent = Intent(this, NewPostActivity::class.java)
+            startActivity(intent)
+        }
 
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> { //toolbar의 back키 눌렀을 때 동작
+                // 액티비티 이동
+                finish()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
     private fun autoScrollStart(intervalTime: Long){
         myHandler.removeMessages(0)
@@ -99,7 +119,7 @@ class HomeActivity : AppCompatActivity(), OnBannerClickListener {
         val intent = if (position % 2 == 0){
             Intent(this, RegisterActivity::class.java) // 할 수 있다 페이지로 변경
         } else {
-            Intent(this, RegisterActivity::class.java) // 감정 쓰레기통 페이지로 변경
+            Intent(this, TrashKeywordActivity::class.java) // 감정 쓰레기통 페이지로 변경
         }
         startActivity(intent)
     }
