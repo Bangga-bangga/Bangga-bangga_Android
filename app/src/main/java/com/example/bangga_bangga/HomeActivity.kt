@@ -11,8 +11,12 @@ import com.example.bangga_bangga.databinding.ActivityHomeBinding
 //import java.util.logging.Handler
 import android.os.Handler
 import android.view.MenuItem
+import android.view.View
+import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.appcompat.widget.Toolbar
+import com.google.android.material.tabs.TabLayout
 
 interface OnBannerClickListener {
     fun onBannerClick(position: Int)
@@ -29,6 +33,9 @@ class HomeActivity : AppCompatActivity(), OnBannerClickListener {
         super.onCreate(savedInstanceState)
         homeBinding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(homeBinding.root)
+//        setContentView(R.layout.fragment_young)
+//        setContentView(R.layout.fragment_old)
+//        setContentView(R.layout.activity_main)
 
 //        val youngTabView = LayoutInflater.from(this).inflate(R.layout.selector1_layout, null)
 //        val oldTabView = LayoutInflater.from(this).inflate(R.layout.selector1_layout, null)
@@ -38,6 +45,7 @@ class HomeActivity : AppCompatActivity(), OnBannerClickListener {
         val frameLayout = homeBinding.frameLayout
         // 탭2,3번 이미지 변경하기
         val tabSelectors = intArrayOf(R.drawable.selector1, R.drawable.selector1, R.drawable.selector1)
+        val userType = "어른"
 
         /** 툴바 생성 코드**/
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -93,10 +101,62 @@ class HomeActivity : AppCompatActivity(), OnBannerClickListener {
             startActivity(intent)
             finish() // 현재 액티비티를 종료하여 새로운 액티비티를 열 때 새로고침 효과
         }
-        homeBinding.writePostBtn.setOnClickListener{
+        val writePostBtn = homeBinding.writePostBtn
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                // 선택된 탭의 위치를 가져옴
+                val selectedTabPosition = tab?.position ?: 0
+                if(selectedTabPosition == 0 && userType == "어른"){
+                    writePostBtn.visibility = View.VISIBLE
+                } else if(selectedTabPosition == 1 && userType == "어른"){
+                    writePostBtn.visibility = View.GONE
+                } else if(selectedTabPosition == 0 && userType == "애"){
+                    writePostBtn.visibility = View.GONE
+                } else if(selectedTabPosition == 0 && userType == "어른"){
+                    writePostBtn.visibility = View.VISIBLE
+                }
+                // 이 위치를 사용하여 원하는 작업을 수행할 수 있음
+                // 예: 선택된 탭의 위치로 다른 동작 수행
+            }
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                // 탭이 선택 해제되었을 때 필요한 동작을 수행할 수 있음
+            }
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                // 이미 선택된 탭이 다시 선택되었을 때 필요한 동작을 수행할 수 있음
+            }
+        })
+        writePostBtn.setOnClickListener{
             val intent = Intent(this, NewPostActivity::class.java)
             startActivity(intent)
         }
+
+//        val writePostBtnYoung = findViewById<Button>(R.id.writePostBtn_young)
+//        val writePostBtnOld = findViewById<Button>(R.id.writePostBtn_old)
+//
+//        writePostBtnYoung.setOnClickListener{
+//            val intent = Intent(this, NewPostActivity::class.java)
+//            startActivity(intent)
+//        }
+//        writePostBtnOld.setOnClickListener{
+//            val intent = Intent(this, NewPostActivity::class.java)
+//            startActivity(intent)
+//        }
+//        val innerFrameLayoutYoung = findViewById<FrameLayout>(R.id.inner_frame_layout_young)
+//        val innerFrameLayoutOld = findViewById<FrameLayout>(R.id.inner_frame_layout_old)
+
+
+//        if(userType == "어른"){
+//            writePostBtnYoung.visibility = View.VISIBLE
+////            val layoutParamsYoung = innerFrameLayoutYoung.layoutParams
+////            layoutParamsYoung.height = (420*resources.displayMetrics.density +0.5f).toInt()  // dp -> px
+////            frameLayout.layoutParams = layoutParamsYoung
+//            writePostBtnOld.visibility = View.INVISIBLE
+////            val layoutParamsOld = innerFrameLayoutOld.layoutParams
+////            layoutParamsOld.height = ()
+//        } else if(userType == "애"){
+//            writePostBtnYoung.visibility = View.INVISIBLE
+//            writePostBtnOld.visibility = View.VISIBLE
+//        }
 
 
 
