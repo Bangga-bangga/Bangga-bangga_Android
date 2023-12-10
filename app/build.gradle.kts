@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.firebase.firebase-perf") version "1.4.2" apply false
 //    id("androidx.navigation.safeargs")
 }
 

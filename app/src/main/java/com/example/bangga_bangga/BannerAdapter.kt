@@ -13,10 +13,6 @@ import com.example.bangga_bangga.databinding.BannerItemBinding
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.bangga_bangga.databinding.ActivityRegisterBinding
 
-//interface OnBannerClickListener {
-//    fun onBannerClick(position: Int)
-//}
-
 class BannerAdapter(private val bannerList: Array<Array<String>>, private var listener: OnBannerClickListener) : RecyclerView.Adapter<BannerAdapter.BannerViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : BannerViewHolder {
@@ -32,7 +28,6 @@ class BannerAdapter(private val bannerList: Array<Array<String>>, private var li
             listener.onBannerClick(position)
         }
     }
-//    inner class BannerViewHolder(val binding:BannerItemBinding) : RecyclerView.ViewHolder(binding.root)
 
     fun setOnBannerClickListener(listener: OnBannerClickListener) {
         this.listener = listener

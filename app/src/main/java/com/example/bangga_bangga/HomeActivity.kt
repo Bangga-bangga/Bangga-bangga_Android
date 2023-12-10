@@ -10,6 +10,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.bangga_bangga.databinding.ActivityHomeBinding
 //import java.util.logging.Handler
 import android.os.Handler
+import android.widget.ImageView
 
 interface OnBannerClickListener {
     fun onBannerClick(position: Int)
@@ -24,9 +25,40 @@ class HomeActivity : AppCompatActivity(), OnBannerClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_home)
         homeBinding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(homeBinding.root)
+
+//        val youngTabView = LayoutInflater.from(this).inflate(R.layout.selector1_layout, null)
+//        val oldTabView = LayoutInflater.from(this).inflate(R.layout.selector1_layout, null)
+//        val myPageTabView = LayoutInflater.from(this).inflate(R.layout.selector1_layout, null)
+
+        val tabLayout = homeBinding.tabLayout
+        val frameLayout = homeBinding.frameLayout
+        // 탭2,3번 이미지 변경하기
+        val tabSelectors = intArrayOf(R.drawable.selector1, R.drawable.selector1, R.drawable.selector1)
+
+        for(i in tabSelectors.indices) {
+            val tab = tabLayout.newTab()
+            tabLayout.addTab(tab, false)
+            tab.setCustomView(R.layout.selector_layout)
+
+            val tabView = tab.customView
+            val tabImageView = tabView?.findViewById<ImageView>(R.id.youngTab)
+            tabImageView?.setImageResource(tabSelectors[i])
+
+            tabLayout.getTabAt(i)?.let { tab ->
+                tab.view?.setOnClickListener{
+                    val transaction = supportFragmentManager.beginTransaction()
+                    when(i){
+                        0 -> transaction.replace(R.id.frameLayout, FragmentYoungTab())
+                        1 -> transaction.replace(R.id.frameLayout, FragmentOldTab())
+                        2 -> transaction.replace(R.id.frameLayout, FragmentMyPageTab())
+                    }
+                }
+            }
+        }
+
+
 
         val bannerAdapter = BannerAdapter(getBannerList(), this)
         bannerAdapter.setOnBannerClickListener(this)
@@ -54,6 +86,7 @@ class HomeActivity : AppCompatActivity(), OnBannerClickListener {
             startActivity(intent)
             finish() // 현재 액티비티를 종료하여 새로운 액티비티를 열 때 새로고침 효과
         }
+
     }
     private fun autoScrollStart(intervalTime: Long){
         myHandler.removeMessages(0)
