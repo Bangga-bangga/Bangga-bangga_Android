@@ -7,11 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bangga_bangga.model.MyPostModel
 import com.example.bangga_bangga.model.PreviewModel
 
 class FragmentMyPageTab : Fragment() {
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: PreviewAdapter
+    private lateinit var adapter: MyPostAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -19,18 +20,18 @@ class FragmentMyPageTab : Fragment() {
 
         // 예시 데이터 생성
         val posts = mutableListOf(
-            PreviewModel("제목1", "첫 번째 글", "닉네임1", 0,0),
-            PreviewModel("제목2", "두 번째 글", "닉네임2",0,0),
-            PreviewModel("제목3", "세 번째 글", "닉네임3",0,0),
-            PreviewModel("제목3", "세 번째 글", "닉네임3",0,0),
-            PreviewModel("제목3", "세 번째 글", "닉네임3",0,0),
-            PreviewModel("제목3", "세 번째 글", "닉네임3",0,0)
+            MyPostModel("제목1", "첫 번째 글", 0,0),
+            MyPostModel("제목2", "두 번째 글",0,0),
+            MyPostModel("제목3", "세 번째 글",0,0),
+            MyPostModel("제목3", "세 번째 글",0,0),
+            MyPostModel("제목3", "세 번째 글",0,0),
+            MyPostModel("제목3", "세 번째 글",0,0)
         )
 
-//        recyclerView = view.findViewById(R.id.recyclerView_old)
-//        recyclerView.layoutManager = LinearLayoutManager(context)
-//        adapter = PreviewAdapter(posts)
-//        recyclerView.adapter = adapter
+        recyclerView = view.findViewById(R.id.recyclerView_myPage)
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        adapter = MyPostAdapter(posts)
+        recyclerView.adapter = adapter
 
 //        fetchDataFromServer() // 서버에서 데이터를 가져옴
         return view
@@ -41,9 +42,9 @@ class FragmentMyPageTab : Fragment() {
 
         // 예시 데이터 생성
         val posts = listOf(
-            PreviewModel("제목1", "첫 번째 글", "닉네임1", 0,0),
-            PreviewModel("제목2", "두 번째 글", "닉네임2",0,0),
-            PreviewModel("제목3", "세 번째 글", "닉네임3",0,0)
+            MyPostModel("제목1", "첫 번째 글", 0,0),
+            MyPostModel("제목2", "두 번째 글", 0,0),
+            MyPostModel("제목3", "세 번째 글", 0,0)
         )
 
         adapter.setPosts(posts)
