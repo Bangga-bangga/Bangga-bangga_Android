@@ -8,7 +8,7 @@
         android:paddingRight="0dp"
         android:layout_width="136dp"
         android:layout_height="136dp"
-        android:id="@+id/youngTab"
+        android:id="@+id/tabImage"
         android:src="@drawable/selector1"/>
 </LinearLayout>
 
