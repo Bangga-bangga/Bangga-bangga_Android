@@ -1,6 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+<!--    툴바 코드입니다 복사해서 자신의 코드에 알맞게 넣어주세요 -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:layout_marginLeft="1dp"
+        android:background="#FFD964"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        android:layout_gravity="top"/>
+
+    <Button
+        android:id="@+id/convert_page_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button" />
+
+
+    <Button
+        android:id="@+id/login_page_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="로그인 화면으로 가기" />
+
+    <Button
+        android:id="@+id/start_page_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="시작 화면으로 가기" />
+
+    <Button
+        android:id="@+id/newpost_page_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="게시긓 작성 화면으로 가기" />
+
+</LinearLayout>

@@ -34,6 +34,7 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val registerBinding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(registerBinding.root)
+
         var validate = 0
         var passwordValidate = 0
         val emailValidation = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
