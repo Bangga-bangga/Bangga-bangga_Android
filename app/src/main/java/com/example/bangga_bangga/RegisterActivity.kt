@@ -1,5 +1,6 @@
 package com.example.bangga_bangga
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.PersistableBundle
@@ -24,6 +25,8 @@ import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Query
 import java.util.regex.Pattern
@@ -100,12 +103,13 @@ class RegisterActivity : AppCompatActivity() {
 
         // Retrofit 객체 생성
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://ec2-13-125-135-255.ap-northeast-2.compute.amazonaws.com:8080") // 서버 기본 URL
+            .baseUrl("http://ec2-13-125-135-255.ap-northeast-2.compute.amazonaws.com:8080/") // 서버 기본 URL
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         // API 서비스 생성
-        val apiService = retrofit.create(NicknameCheckService::class.java)
+        val nicknameCheckService = retrofit.create(NicknameCheckService::class.java)
+//        val registerService = retrofit.create(RegisterService::class.java)
 
 
         registerBinding.duplicationCheckBtn.setOnClickListener{
@@ -120,7 +124,7 @@ class RegisterActivity : AppCompatActivity() {
 //                val nicknameData = NicknameData(nickname)
 
                 // API 요청 보내기
-                apiService.checkNickname(nickname).enqueue(object : Callback<NicknameValidationResponse> {
+                nicknameCheckService.checkNickname(nickname).enqueue(object : Callback<NicknameValidationResponse> {
                     override fun onResponse(
                         call: Call<NicknameValidationResponse>,
                         response: Response<NicknameValidationResponse>
@@ -128,7 +132,7 @@ class RegisterActivity : AppCompatActivity() {
                         if (response.isSuccessful) {
                             Log.d("tag", "서버 응답왓음요")
                             val nicknameResponse = response.body()
-                            if (nicknameResponse != null) {
+                            if (nicknameResponse != null) {  // 성공시
                                 if (nicknameResponse.result != null && nicknameResponse.result == "중복되지 않은 닉네임입니다.") {
                                     nicknameCheck.text = "* 사용 가능한 닉네임입니다."
                                     nicknameCheck.visibility = View.VISIBLE
@@ -142,6 +146,7 @@ class RegisterActivity : AppCompatActivity() {
                                 }
                             }
                         } else {
+                            response.message()
                             Log.d("tag", "서버 응답 안왓음요")
                             // 서버 응답에 실패한 경우
                             // 실패 이유에 따라 처리
@@ -211,8 +216,41 @@ class RegisterActivity : AppCompatActivity() {
                 ageCheck.visibility = View.INVISIBLE
             }
 
+            // 중복 검사한 닉네임이랑 제출할 때 입력된 닉네임이 동일한지 체크하고 아니면 nicknameValidation 0으로 바꾸기
             if (nickname != "" && email != "" && password != "" && repassword != "" && age != "" && nicknameValidation == 1 && passwordValidation == 1){
                 // json형식으로 서버에 회원가입 api 요청하기
+//                val registerRequest = RegisterRequest(email,password,nickname,age.toInt())
+//                val call = registerService.signUp(registerRequest)
+//                call.enqueue(object : Callback<RegisterResponse> {
+//                    override fun onResponse(
+//                        call: Call<RegisterResponse>,
+//                        response: Response<RegisterResponse>
+//                    ) {
+//                        if (response.isSuccessful) {
+//                            Log.d("tag", "서버 응답은 있음")
+//                            val signUpResponse = response.body()
+//                            if (signUpResponse?.result == "성공") {
+//                                val intent = Intent(this@RegisterActivity, StartActivity::class.java)
+//                                startActivity(intent)
+//                                Toast.makeText(this@RegisterActivity, "회원가입 성공", Toast.LENGTH_SHORT).show()
+//                                // 성공적으로 회원가입된 경우
+//                            } else {
+//                                Log.d("tag", "서버 응답은 받았는디 회원가입 실패")
+//                                // 서버 응답은 성공이지만, 회원가입 실패한 경우
+//                                // signUpResponse?.detail 등을 사용하여 실패 원인 처리
+//                            }
+//                        } else {
+//                            Log.d("tag", "서버 응답 없음")
+//                            // 서버 요청 실패 처리
+//                            // response.errorBody() 등을 사용하여 실패 원인 처리
+//                        }
+//                    }
+//
+//                    override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+//                        // 네트워크 오류 등으로 인한 요청 실패 처리
+//                    }
+//                })
+
             }
         }
         registerBinding.passwordCheckInput.addTextChangedListener(object : TextWatcher {
@@ -259,21 +297,6 @@ class RegisterActivity : AppCompatActivity() {
                 checkEmail()
             }
         })
-        registerBinding.ageInput.addTextChangedListener(object : TextWatcher {
-            val age = registerBinding.ageInput.text.toString()
-            override fun afterTextChanged(s: Editable?) {
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if(age.length > 2){
-
-                }
-            }
-        })
-
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -285,28 +308,4 @@ class RegisterActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-//    private fun sendNicknameToServer(nickname: NicknameData){
-//        val retrofit = Retrofit.Builder()
-//            .baseUrl("url") // 서버의 기본 URL
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .build()
-//
-//        val apiService = retrofit.create(ApiService::class.java)
-//        val call = apiService.postNickname(nickname)
-//        call.enqueue(object : Callback<Void> {
-//            override fun onResponse(call: Call<Void>, response: Response<Void>) {
-//                if (response.isSuccessful) {
-//                    // 서버 요청 성공
-//                    // 원하는 작업 수행
-//                } else {
-//                    // 서버 요청 실패
-//                    // 실패 이유에 따라 처리
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<Void>, t: Throwable) {
-//                // 네트워크 오류 등으로 인한 요청 실패 처리
-//            }
-//        })
-//    }
 }
