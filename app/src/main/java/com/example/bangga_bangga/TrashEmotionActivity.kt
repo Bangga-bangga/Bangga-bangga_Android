@@ -1,11 +1,13 @@
 package com.example.bangga_bangga
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -15,6 +17,8 @@ import java.util.Random
 class TrashEmotionActivity : AppCompatActivity() {
     private var keywordList: MutableList<String>? = null
     private lateinit var trashEmotionLayout: ConstraintLayout
+    private lateinit var trashCan: ImageView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,6 +26,8 @@ class TrashEmotionActivity : AppCompatActivity() {
 
         trashEmotionLayout = findViewById(R.id.trash_emotion_layout)
         keywordList = intent.getStringArrayListExtra("keywordList")?.toMutableList()
+
+        trashCan = findViewById<ImageView>(R.id.trash_can_img)
 
         displayKeywordsRandomly()
     }
@@ -94,7 +100,22 @@ class TrashEmotionActivity : AppCompatActivity() {
                 layoutParams.topMargin = newTopMargin
                 view.layoutParams = layoutParams
             }
+            MotionEvent.ACTION_UP -> {
+                if (isViewOverlapping(view, trashCan)) {
+                    trashEmotionLayout.removeView(view)
+                }
+            }
         }
         return true
+    }
+
+    private fun isViewOverlapping(view1: View, view2: View): Boolean {
+        val rect1 = Rect()
+        view1.getHitRect(rect1)
+
+        val rect2 = Rect()
+        view2.getHitRect(rect2)
+
+        return Rect.intersects(rect1, rect2)
     }
 }
