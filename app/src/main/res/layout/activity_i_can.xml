@@ -24,13 +24,14 @@
             android:layout_height="wrap_content"
             android:text="나는 할 수 있다!"
             app:layout_constraintBottom_toTopOf="@+id/i_can_character_img"
-            android:layout_marginBottom="10dp"
-            app:layout_constraintVertical_bias="0.5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:visibility="invisible"
             android:textSize="20dp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/i_can_character_img"
+            app:layout_constraintVertical_bias="0.5"
+            android:layout_marginBottom="0dp"/>
 
         <ImageView
             android:id="@+id/i_can_character_img"
