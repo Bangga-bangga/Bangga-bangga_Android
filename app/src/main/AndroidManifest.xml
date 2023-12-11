@@ -30,6 +30,7 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".StartActivity" />
         <activity android:name=".NewPostActivity" />
+        <activity android:name=".ICanActivity"/>
     </application>
 
 </manifest>
