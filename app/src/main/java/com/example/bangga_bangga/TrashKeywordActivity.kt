@@ -1,5 +1,6 @@
 package com.example.bangga_bangga
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.TypedValue
@@ -29,6 +30,8 @@ class TrashKeywordActivity : AppCompatActivity() {
         val inputKeywordBtn = findViewById<Button>(R.id.input_keyword_btn)
         val keywordListLayout = findViewById<LinearLayout>(R.id.keyword_list_layout)
 
+        val goEmptyCanBtn = findViewById<Button>(R.id.go_empty_can)
+
         inputKeywordBtn.setOnClickListener {
             val keyword = editTextEmotionKeyword.text.toString().trim()
 
@@ -39,13 +42,23 @@ class TrashKeywordActivity : AppCompatActivity() {
                 keywordTextView.text = keyword
                 keywordTextView.setTextColor(Color.parseColor("#2A2500"))
                 keywordTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30f)
-                keywordTextView.setGravity(Gravity.CENTER)
+                keywordTextView.gravity = Gravity.CENTER
                 keywordTextView.setPadding(0, 15, 0, 15)
                 keywordListLayout.addView(keywordTextView)
 
             }
 
             editTextEmotionKeyword.text.clear()
+        }
+
+        fun convertToTrashEmotionActivity() {
+            var intent = Intent(this, TrashEmotionActivity::class.java)
+            intent.putStringArrayListExtra("keywordList", ArrayList(keywordList))
+            startActivity(intent)
+        }
+
+        goEmptyCanBtn.setOnClickListener {
+            convertToTrashEmotionActivity()
         }
 
     }
