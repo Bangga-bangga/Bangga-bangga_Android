@@ -7,6 +7,18 @@
     android:background="#FEEEB2"
     >
 
+<!--    이거 툴바 생성 코드인데 이러케 너으면댈듯! 알아서 고쳐!-->
+<!--    <androidx.appcompat.widget.Toolbar-->
+<!--        android:id="@+id/toolbar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="1dp"-->
+<!--        android:layout_marginLeft="1dp"-->
+<!--        android:background="#FFD964"-->
+<!--        android:minHeight="?attr/actionBarSize"-->
+<!--        android:theme="?attr/actionBarTheme"-->
+<!--        android:layout_gravity="top" />-->
+
     <LinearLayout
         android:id="@+id/emotion_keyword_layout"
         android:layout_width="match_parent"
@@ -15,8 +27,11 @@
         android:gravity="center"
         android:paddingTop="60dp"
         android:paddingBottom="20dp"
-        android:background="#FFD964
-">
+        android:background="#FFD964">
+<!--        아래 속성을 여기에 추가해줘야 툴바가 보이더라-->
+<!--        android:layout_below="@+id/toolbar"-->
+
+
 
         <TextView
             android:layout_width="wrap_content"
