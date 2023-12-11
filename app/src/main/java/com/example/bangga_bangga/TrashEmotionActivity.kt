@@ -2,6 +2,7 @@ package com.example.bangga_bangga
 
 import android.os.Bundle
 import android.view.Gravity
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
@@ -45,8 +46,8 @@ class TrashEmotionActivity : AppCompatActivity() {
                     )
 
                     layoutParams.setMargins(
-                        random.nextInt(trashEmotionLayout.width - textView.width),
-                        random.nextInt(trashEmotionLayout.height - textView.height),
+                        random.nextInt(trashEmotionLayout.width - textView.width - 600),
+                        random.nextInt(trashEmotionLayout.height - textView.height - 600),
                         0,
                         0
                     )
@@ -58,10 +59,42 @@ class TrashEmotionActivity : AppCompatActivity() {
 
                     textView.setBackgroundResource(R.drawable.trash)
 
+                    textView.setOnTouchListener { view, event ->
+                        handleTouch(view, event)
+                    }
+
                     trashEmotionLayout.addView(textView)
                 }
             }
         })
     }
 
+    private fun handleTouch(view: View, event: MotionEvent): Boolean {
+        val rawX = event.rawX.toInt()
+        val rawY = event.rawY.toInt()
+
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
+                val layoutParams = view.layoutParams as ConstraintLayout.LayoutParams
+                val xDelta = rawX - layoutParams.leftMargin
+                val yDelta = rawY - layoutParams.topMargin
+
+                view.setTag(R.id.tag_x, xDelta)
+                view.setTag(R.id.tag_y, yDelta)
+            }
+            MotionEvent.ACTION_MOVE -> {
+                val xDelta = view.getTag(R.id.tag_x) as Int
+                val yDelta = view.getTag(R.id.tag_y) as Int
+
+                val newLeftMargin = rawX - xDelta
+                val newTopMargin = rawY - yDelta
+
+                val layoutParams = view.layoutParams as ConstraintLayout.LayoutParams
+                layoutParams.leftMargin = newLeftMargin
+                layoutParams.topMargin = newTopMargin
+                view.layoutParams = layoutParams
+            }
+        }
+        return true
+    }
 }
