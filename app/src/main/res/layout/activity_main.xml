@@ -21,14 +21,20 @@
 
     <Button
         android:id="@+id/convert_page_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:text="감정 쓰레기통 페이지 가기" />
+
+    <Button
+        android:id="@+id/i_can_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="나는 할 수 있다 페이지 가기" />
 
 
     <Button
         android:id="@+id/login_page_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="로그인 화면으로 가기" />
 
