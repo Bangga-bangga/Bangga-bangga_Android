@@ -1,7 +1,7 @@
 package com.example.bangga_bangga
 
 import android.os.Bundle
-import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
@@ -37,13 +37,12 @@ class TrashEmotionActivity : AppCompatActivity() {
                     val textView = TextView(this@TrashEmotionActivity)
                     textView.text = keyword
                     textView.id = View.generateViewId()
+                    textView.gravity = Gravity.CENTER
 
                     val layoutParams = ConstraintLayout.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT
+                        300,
+                        300
                     )
-
-                    Log.d("TextViewSize", "TextView width: ${textView.width}, height: ${textView.height}")
 
                     layoutParams.setMargins(
                         random.nextInt(trashEmotionLayout.width - textView.width),
@@ -57,8 +56,7 @@ class TrashEmotionActivity : AppCompatActivity() {
                         topToTop = ConstraintSet.PARENT_ID
                     }
 
-                    Log.d("RandomValues", "Random Width: ${random.nextInt(trashEmotionLayout.width - textView.width)}, Random Height: ${random.nextInt(trashEmotionLayout.height - textView.height)}")
-                    Log.d("LayoutParams", "Margins: left=${layoutParams.leftMargin}, top=${layoutParams.topMargin}, right=${layoutParams.rightMargin}, bottom=${layoutParams.bottomMargin}")
+                    textView.setBackgroundResource(R.drawable.trash)
 
                     trashEmotionLayout.addView(textView)
                 }
