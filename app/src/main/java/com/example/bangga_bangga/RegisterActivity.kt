@@ -1,11 +1,13 @@
 package com.example.bangga_bangga
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.provider.ContactsContract.CommonDataKinds.Nickname
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -13,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.text.isDigitsOnly
 import com.example.bangga_bangga.databinding.ActivityRegisterBinding
+import com.google.gson.annotations.SerializedName
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -21,15 +25,47 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.Headers
 import retrofit2.http.POST
+import retrofit2.http.Query
 import java.util.regex.Pattern
 
-//data class NicknameData(val nickname: String)
-//
-//interface ApiService {
-//    @POST("your_endpoint_here") // 서버의 엔드포인트 URL을 입력해야 합니다.
-//    fun postNickname(@Body nickname:  NicknameData): Call<Void>
-//}
+data class NicknameValidationResponse(
+    val result: String?,
+    val code: Int?,
+    val message: String?,
+    val details: String?
+)
+data class RegisterRequest(
+    @SerializedName("email") val email: String,
+    @SerializedName("password") val password: String,
+    @SerializedName("nickname") val nickname: String,
+    @SerializedName("age") val age: Int
+)
+data class RegisterResponse(
+    val result: String?,
+    val type: String?,
+    val title: String?,
+    val status: Int?,
+    val detail: String?,
+    val instance: String?
+)
+
+interface NicknameCheckService {
+    @GET("/sign-up/exists") // 서버의 엔드포인트 URL을 입력해야 합니다.
+    fun checkNickname(
+        @Query("nickname") nickname: String
+    ): Call<NicknameValidationResponse>
+}
+
+interface RegisterService {
+    @POST("/sign-up") // 서버의 엔드포인트 URL을 입력해야 합니다.
+    fun signUp(
+        @Body request: RegisterRequest
+    ): Call<RegisterResponse>
+}
 
 class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,9 +73,10 @@ class RegisterActivity : AppCompatActivity() {
         val registerBinding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(registerBinding.root)
 
-        var validate = 0
-        var passwordValidate = 0
-        val emailValidation = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
+        var nicknameValidation = 0
+        var passwordValidation = 0
+        var emailValidation = 0
+        val emailForm = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
 
         /** 툴바 생성 코드**/
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -50,30 +87,73 @@ class RegisterActivity : AppCompatActivity() {
         fun checkEmail():Boolean{
             val email = registerBinding.emailInput.text.toString().trim()
             var emailCheck = registerBinding.emailVaildationCheckResult
-            val p = Pattern.matches(emailValidation, email) // 서로 패턴이 맞는지 검사
+            val p = Pattern.matches(emailForm, email) // 서로 패턴이 맞는지 검사
             if (p) {
                 emailCheck.setTextColor(Color.rgb(52, 107, 235))
                 emailCheck.text = "* 유효한 이메일 형식입니다."
                 emailCheck.visibility = View.VISIBLE
+                emailValidation = 1
                 return true
             } else {
                 emailCheck.setTextColor(Color.rgb(250,80,42))
                 emailCheck.text = "* 정상적인 이메일 형식이 아닙니다."
                 emailCheck.visibility = View.VISIBLE
+                emailValidation - 0
                 return false
             }
         }
 
+        // Retrofit 객체 생성
+        val retrofit = Retrofit.Builder()
+            .baseUrl("http://ec2-13-125-135-255.ap-northeast-2.compute.amazonaws.com:8080/") // 서버 기본 URL
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        // API 서비스 생성
+        val nicknameCheckService = retrofit.create(NicknameCheckService::class.java)
+        val registerService = retrofit.create(RegisterService::class.java)
+
+
         registerBinding.duplicationCheckBtn.setOnClickListener{
             val nickname = registerBinding.nicknameInput.text.toString()
+            var nicknameCheck = registerBinding.duplicationCheckResultText
             if(nickname.isEmpty()) Toast.makeText(
                 this@RegisterActivity,
                 "닉네임을 입력해주세요.",
                 Toast.LENGTH_SHORT
             ).show() else{
-                // 입력된 비밀번호를 파라미터에 담아서 서버에 중복 검사 api 요청하기
-                // 성공시 -> "사용 가능한 닉네임입니다" 띄우기 + vaildation을 1로 바꾸기
-                // 실패시 -> "사용 불가능한 닉네임입니다" 띄우기
+                // API 요청 보내기
+                nicknameCheckService.checkNickname(nickname).enqueue(object : Callback<NicknameValidationResponse> {
+                    override fun onResponse(
+                        call: Call<NicknameValidationResponse>,
+                        response: Response<NicknameValidationResponse>
+                    ) {
+                        if (response.isSuccessful) {
+                            val nicknameResponse = response.body()
+                            if (nicknameResponse != null) {
+                                if (response.code() == 200) {
+                                    nicknameCheck.text = "* 사용 가능한 닉네임입니다."
+                                    nicknameCheck.visibility = View.VISIBLE
+                                    nicknameCheck.setTextColor(Color.rgb(52, 107, 235))
+                                    nicknameValidation = 1
+                                } else {
+
+                                }
+                            }
+                        } else {
+                            if (response.code() == 400){
+                                nicknameCheck.text = "* 이미 존재하는 닉네임입니다."
+                                nicknameCheck.visibility = View.VISIBLE
+                                nicknameCheck.setTextColor(Color.rgb(250,80,42))
+                                nicknameValidation = 0
+                            }
+                        }
+                    }
+                    override fun onFailure(call: Call<NicknameValidationResponse>, t: Throwable) {
+                        // 네트워크 오류 등으로 인한 요청 실패 처리
+                        Toast.makeText(this@RegisterActivity, "닉네임 중복 검사 실패", Toast.LENGTH_SHORT)
+                    }
+                })
             }
         }
 
@@ -99,9 +179,9 @@ class RegisterActivity : AppCompatActivity() {
                 emailCheck.text = "* 이메일을 입력해주세요."
                 emailCheck.visibility = View.VISIBLE
             }
-            if(password == ""){
+            if(password.length < 8){
                 passwordCheck.setTextColor(Color.rgb(250,80,42))
-                passwordCheck.text = "* 비밀번호를 입력해주세요."
+                passwordCheck.text = "* 비밀번호를 8자리 이상 입력해주세요."
                 passwordCheck.visibility = View.VISIBLE
             }
             if(repassword == ""){
@@ -117,23 +197,67 @@ class RegisterActivity : AppCompatActivity() {
             if (nickname != ""){
                 nicknameCheck.visibility = View.INVISIBLE
             }
-            if (email != ""){
+            if (email != "" && emailValidation == 1){
                 emailCheck.visibility = View.INVISIBLE
             }
-            if (password != ""){
+            if (password != "" && password.length > 7){
                 passwordCheck.visibility = View.INVISIBLE
             }
-//            if (repassword != ""){
-//                repasswordCheck.visibility = View.INVISIBLE
-//            }
+            if (repassword != ""){
+                repasswordCheck.visibility = View.INVISIBLE
+            }
             if (age != ""){
                 ageCheck.visibility = View.INVISIBLE
             }
+            if (password != repassword){
+                passwordValidation = 0
+                repasswordCheck.setTextColor(Color.rgb(250,80,42))
+                repasswordCheck.text = "* 비밀번호가 일치하지 않습니다."
+                repasswordCheck.visibility = View.VISIBLE
+            }
 
-            if (nickname != "" && email != "" && password != "" && repassword != "" && age != "" && validate == 1 && passwordValidate == 1){
+            if (nickname != "" && email != "" && password != "" && repassword != "" && age != "" && nicknameValidation == 1 && passwordValidation == 1 && emailValidation == 1){
                 // json형식으로 서버에 회원가입 api 요청하기
+                val registerRequest = RegisterRequest(email,password,nickname,age.toInt())
+                val call = registerService.signUp(registerRequest)
+                call.enqueue(object : Callback<RegisterResponse> {
+                    override fun onResponse(
+                        call: Call<RegisterResponse>,
+                        response: Response<RegisterResponse>
+                    ) {
+                        if (response.isSuccessful) {
+                            Log.d("tag", "서버 응답은 있음")
+                            val signUpResponse = response.body()
+                            if (response.code() == 200) {
+                                val intent =
+                                    Intent(this@RegisterActivity, StartActivity::class.java)
+                                startActivity(intent)
+                                Toast.makeText(this@RegisterActivity, "회원가입 성공", Toast.LENGTH_SHORT)
+                                    .show()
+                                // 성공적으로 회원가입된 경우
+                            }
+                        } else {
+                            if (response.code() == 400) {
+                                Toast.makeText(this@RegisterActivity, "회원가입 입력 형식이 올바르지 않습니다.", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+                        // 네트워크 오류 등으로 인한 요청 실패 처리
+                        Toast.makeText(this@RegisterActivity, "회원가입 실패", Toast.LENGTH_SHORT)
+                    }
+                })
+            } else {
+                if(nicknameValidation == 0){
+                    nicknameCheck.setTextColor(Color.rgb(250,80,42))
+                    nicknameCheck.text = "* 닉네임 중복을 확인해주세요."
+                    nicknameCheck.visibility = View.VISIBLE
+                }
             }
         }
+
+
         registerBinding.passwordCheckInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 //                TODO("Not yet implemented")
@@ -142,15 +266,23 @@ class RegisterActivity : AppCompatActivity() {
                 val password = registerBinding.passwordInput.text.toString()
                 val repassword = registerBinding.passwordCheckInput.text.toString()
                 var repasswordCheck = registerBinding.repasswordVaildationCheckResult
+                var passwordCheck = registerBinding.passwordVaildationCheckResult
+                if(password.length < 8){
+                    passwordCheck.setTextColor(Color.rgb(250,80,42))
+                    passwordCheck.text = "* 비밀번호를 8자리 이상 입력해주세요."
+                    passwordCheck.visibility = View.VISIBLE
+                } else {
+                    passwordCheck.visibility = View.INVISIBLE
+                }
                 if (password != "" && repassword != ""){
                     if(password != repassword){
-                        passwordValidate = 0
+                        passwordValidation = 0
                         repasswordCheck.setTextColor(Color.rgb(250,80,42))
                         repasswordCheck.text = "* 비밀번호가 일치하지 않습니다."
                         repasswordCheck.visibility = View.VISIBLE
                     } else {
                         repasswordCheck.setTextColor(Color.rgb(52, 107, 235))
-                        passwordValidate = 1
+                        passwordValidation = 1
                         repasswordCheck.text = "* 비밀번호가 일치합니다."
                         repasswordCheck.visibility = View.VISIBLE
                     }
@@ -178,21 +310,6 @@ class RegisterActivity : AppCompatActivity() {
                 checkEmail()
             }
         })
-        registerBinding.ageInput.addTextChangedListener(object : TextWatcher {
-            val age = registerBinding.ageInput.text.toString()
-            override fun afterTextChanged(s: Editable?) {
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if(age.length > 2){
-
-                }
-            }
-        })
-
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -204,28 +321,4 @@ class RegisterActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-//    private fun sendNicknameToServer(nickname: NicknameData){
-//        val retrofit = Retrofit.Builder()
-//            .baseUrl("url") // 서버의 기본 URL
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .build()
-//
-//        val apiService = retrofit.create(ApiService::class.java)
-//        val call = apiService.postNickname(nickname)
-//        call.enqueue(object : Callback<Void> {
-//            override fun onResponse(call: Call<Void>, response: Response<Void>) {
-//                if (response.isSuccessful) {
-//                    // 서버 요청 성공
-//                    // 원하는 작업 수행
-//                } else {
-//                    // 서버 요청 실패
-//                    // 실패 이유에 따라 처리
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<Void>, t: Throwable) {
-//                // 네트워크 오류 등으로 인한 요청 실패 처리
-//            }
-//        })
-//    }
 }
