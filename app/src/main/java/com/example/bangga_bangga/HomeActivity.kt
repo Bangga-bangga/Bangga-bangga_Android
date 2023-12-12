@@ -19,6 +19,7 @@ import android.widget.ImageView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.example.bangga_bangga.model.PreviewModel
+import com.example.bangga_bangga.model.UserInfoModel
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -114,8 +115,55 @@ interface PreviewMzsPostsService {
     }
 }
 
+data class UserInfoResponse(
+    val email: String,
+    val category: String,
+    val nickname: String,
+    val age: Int,
+    val myPost: MyPost,
+    val totalPageCount: Int
+)
+
+data class MyPost(
+    val posts: List<PreviewModel>,
+    val totalPageCount: Int
+)
 
 
+interface UserInfoService {
+    @GET("/user/me")
+    fun getUserInfo(
+        @Query("size") size: Int,
+        @Query("page") page: Int
+    ): Call<UserInfoResponse>
+
+    companion object {
+        private const val BASE_URL = "http://ec2-13-125-135-255.ap-northeast-2.compute.amazonaws.com:8080/"
+        val gson: Gson = GsonBuilder().setLenient().create();
+
+        fun createUserInfo(context: Context): UserInfoService {
+            val prefToken =  context.getSharedPreferences("userToken", Context.MODE_PRIVATE)
+            val token = prefToken.getString("token", null)
+
+            //헤더에 Authorization 토큰 넣기
+            val client = OkHttpClient.Builder()
+                .addInterceptor(Interceptor { chain ->
+                    val newRequest = chain.request().newBuilder()
+                        .addHeader("Authorization", "$token")
+                        .build()
+                    Log.d("url", newRequest.toString())
+                    chain.proceed(newRequest)
+                })
+                .build()
+
+            //헤더와 함께 요청
+            return Retrofit.Builder().baseUrl(BASE_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create(gson)).build()
+                .create(UserInfoService::class.java)
+        }
+    }
+}
 
 
 
@@ -136,52 +184,16 @@ class HomeActivity : AppCompatActivity(), OnBannerClickListener {
         // 초기 선택된 탭
         var selectedTab = 0
 
-//        youngTab = FragmentYoungTab()
-//        oldTab = FragmentOldTab()
-//        myTab = FragmentMyPageTab()
-//
-//        val initialFragment = if (userType == "adult") {
-//            youngTab
-//        } else {
-//            selectedTab = 1
-//            oldTab
-//        }
-//
-//        supportFragmentManager.beginTransaction().add(R.id.frameLayout, initialFragment).commit()
-//
-//        homeBinding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
-//            override fun onTabSelected(tab: TabLayout.Tab?) {
-//                when(tab?.position){
-//                    0 -> {
-//                        replaceView(youngTab)
-//                    }
-//                    1 -> {
-//                        replaceView(oldTab)
-//                    }
-//                    2 -> {
-//                        replaceView(myTab)
-//                    }
-//                }
-//            }
-//
-//            override fun onTabReselected(tab: TabLayout.Tab?) {
-//            }
-//
-//            override fun onTabUnselected(tab: TabLayout.Tab?) {
-//            }
-//        })
-
         val tabLayout = homeBinding.tabLayout
         // 탭2,3번 이미지 변경하기
         val tabSelectors = intArrayOf(R.drawable.selector1, R.drawable.selector1, R.drawable.selector1)
 
         if(userType =="adult"){
-            supportFragmentManager.beginTransaction().add(R.id.frameLayout, FragmentYoungTab()).commit();
-            Log.d("으른 글","으른")
+            supportFragmentManager.beginTransaction().add(R.id.frameLayout, FragmentOldTab()).commit();
 
         } else if(userType == "mz"){
             selectedTab = 1
-            supportFragmentManager.beginTransaction().add(R.id.frameLayout, FragmentOldTab()).commit();
+            supportFragmentManager.beginTransaction().add(R.id.frameLayout, FragmentYoungTab()).commit();
         }
 
         /** 툴바 생성 코드**/
@@ -189,48 +201,6 @@ class HomeActivity : AppCompatActivity(), OnBannerClickListener {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true) // 뒤로가기 버튼, 디폴트로 true만 해도 백버튼이 생김
         supportActionBar?.title = ""
-
-//        ////여기부터
-//
-//        // 게시글 미리보기 탭
-//        val tabSelectors = intArrayOf(R.drawable.selector1, R.drawable.selector1, R.drawable.selector1)
-//        val tabTitles = arrayOf("Tab 1", "Tab 2", "Tab 3")
-//        val fragments = listOf(FragmentYoungTab(), FragmentOldTab(), FragmentMyPageTab())
-//
-//        for (i in tabTitles.indices) {
-//            val tab = tabLayout.newTab()
-//            tabLayout.addTab(tab)
-//            tab.text = tabTitles[i]
-//
-//            val tabView = LayoutInflater.from(this).inflate(R.layout.selector_layout, null)
-//            val tabImageView = tabView.findViewById<ImageView>(R.id.tabImage)
-//
-//            if (i == selectedTab) {
-//                tabImageView.setImageResource(R.drawable.young_tab_selected)
-//            } else {
-//                tabImageView.setImageResource(R.drawable.young_tab_unselected)
-//            }
-//
-//            tab.customView = tabView
-//
-//            tabLayout.getTabAt(i)?.let { tab ->
-//                tab.view?.setOnClickListener {
-//                    val prevSelectedTab = selectedTab
-//                    selectedTab = i
-//
-//                    val selectedFragment = fragments[i]
-//                    supportFragmentManager.beginTransaction().replace(R.id.frameLayout, selectedFragment).commit()
-//
-//                    val prevTabView = tabLayout.getTabAt(prevSelectedTab)?.customView
-//                    val prevTabImageView = prevTabView?.findViewById<ImageView>(R.id.tabImage)
-//                    prevTabImageView?.setImageResource(R.drawable.young_tab_unselected)
-//
-//                    tabImageView.setImageResource(R.drawable.young_tab_selected)
-//                }
-//            }
-//        }
-//
-//        //// 여기까지
 
         // 게시글 미리보기 탭
         for(i in tabSelectors.indices) {
@@ -260,7 +230,7 @@ class HomeActivity : AppCompatActivity(), OnBannerClickListener {
                     val transaction = supportFragmentManager.beginTransaction()
                     when(i){
                         0 -> {
-                            transaction.replace(R.id.frameLayout, FragmentYoungTab())
+                            transaction.replace(R.id.frameLayout, FragmentOldTab())
                             // 선택된 탭 이미지 변경
                             val prevTabView = tabLayout.getTabAt(prevSelectedTab)?.customView
                             val prevTabImageView = prevTabView?.findViewById<ImageView>(R.id.tabImage)
@@ -269,7 +239,7 @@ class HomeActivity : AppCompatActivity(), OnBannerClickListener {
                             tabImageView?.setImageResource(R.drawable.young_tab_selected)
                         }
                         1 -> {
-                            transaction.replace(R.id.frameLayout, FragmentOldTab())
+                            transaction.replace(R.id.frameLayout, FragmentYoungTab())
 //                             선택된 탭 이미지 변경
                             val prevTabView = tabLayout.getTabAt(prevSelectedTab)?.customView
                             val prevTabImageView = prevTabView?.findViewById<ImageView>(R.id.tabImage)
@@ -354,13 +324,6 @@ class HomeActivity : AppCompatActivity(), OnBannerClickListener {
         }
     }
 
-    private fun replaceView(tab: Fragment) {
-        var selectedFragment: Fragment? = null
-        selectedFragment = tab
-        selectedFragment?.let{
-            supportFragmentManager.beginTransaction().replace(R.id.frameLayout, it).commit()
-        }
-    }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> { //toolbar의 back키 눌렀을 때 동작

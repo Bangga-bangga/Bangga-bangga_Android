@@ -43,9 +43,6 @@ class FragmentYoungTab: Fragment() {
                         adapter.setPosts(posts)
                         adapter.notifyDataSetChanged()
                     }
-//                    recyclerView = view!!.findViewById(R.id.recyclerView_young) ?: return
-//                    recyclerView.layoutManager = LinearLayoutManager(context)
-//                    recyclerView.adapter = adapter
                 } else {
                     Log.d("tag","서버 응답 없음")
                     // Handle unsuccessful response
