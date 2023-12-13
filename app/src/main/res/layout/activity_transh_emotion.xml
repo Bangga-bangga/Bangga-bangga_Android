@@ -6,13 +6,27 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        android:layout_gravity="top"
+        android:background="#FFD964"/>
+
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="부정적인 감정을 쓰레기통에 버려보세요:)"
-        android:layout_gravity="center_horizontal"
+        android:gravity="center"
         android:paddingVertical="30dp"
-        />
+        android:background="#FEEEB2"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#2A2500"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -22,8 +36,8 @@
 
         <ImageView
             android:id="@+id/trash_can_img"
-            android:layout_width="90dp"
-            android:layout_height="100dp"
+            android:layout_width="130dp"
+            android:layout_height="150dp"
             android:layout_marginBottom="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintVertical_bias="0.5"
