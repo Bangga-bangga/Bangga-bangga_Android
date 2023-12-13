@@ -86,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_marginBottom="30dp"
-                android:text="부정적인 감정들을 내려놓고,\n새로운 숨을 크게 들이마셔보세요.\n당신은 강하고,\n미래에는 더 밝은 순간들이 기다리고 있어요\n자신을 믿고,\n긍정적인 에너지로 마음을 가득 채워보세요."/>
+                android:text="부정적인 감정들을 내려놓고,\n새로운 숨을 크게 들이마셔보세요.\n당신은 강하고,\n미래에는 더 밝은 순간들이 기다리고 있어요.\n자신을 믿고,\n긍정적인 에너지로 마음을 가득 채워보세요."/>
 
             <Button
                 android:id="@+id/convert_home_btn"

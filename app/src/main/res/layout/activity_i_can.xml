@@ -31,7 +31,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/trash_emotion_layout">
+        android:id="@+id/i_can_layout"
+        android:visibility="visible">
 
         <TextView
             android:id="@+id/i_can_text"
@@ -61,5 +62,57 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:id="@+id/pop_up_layout"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="420dp"
+            android:orientation="vertical"
+            android:background="@drawable/pop_up"
+            android:gravity="center_horizontal"
+            android:paddingVertical="30dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="정말 잘 하셨어요!"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#2A2500"
+                android:layout_marginBottom="30dp"/>
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/i_can_character_a"
+                android:layout_marginBottom="30dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginBottom="30dp"
+                android:text="당신은 놀라운 존재입니다!\n자신의 능력을 믿고,\n'나는 할 수 있다'라고 말하는 것은\n자기 자신에게 큰 선물입니다.\n당신의 노력과 인내에\n박수를 보냅니다👏"/>
+
+            <Button
+                android:id="@+id/convert_home_btn"
+                android:layout_width="140dp"
+                android:layout_height="50dp"
+                android:text="메인화면으로"
+                android:textSize="16sp"
+                android:background="@drawable/green_btn"
+                android:textColor="#FFFFFF"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
 
 </LinearLayout>
