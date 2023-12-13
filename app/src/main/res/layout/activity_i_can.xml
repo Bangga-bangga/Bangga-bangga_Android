@@ -5,13 +5,28 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        android:layout_gravity="top"
+        android:background="#FFD964"/>
+
+
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text='캐릭터를 터치해 "나는 할 수 있다"를 외쳐보세요:)'
-        android:layout_gravity="center_horizontal"
+        android:gravity="center"
         android:paddingVertical="30dp"
-        />
+        android:background="#FEEEB2"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#2A2500"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -42,7 +57,7 @@
             app:layout_constraintVertical_bias="0.5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/i_can_character" />
+            android:src="@drawable/i_can_character_b"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
