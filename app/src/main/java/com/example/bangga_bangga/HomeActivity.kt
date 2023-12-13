@@ -347,7 +347,7 @@ class HomeActivity : AppCompatActivity(), OnBannerClickListener {
     }
     override fun onBannerClick(position: Int){
         val intent = if (position % 2 == 0){
-            Intent(this, RegisterActivity::class.java) // 할 수 있다 페이지로 변경
+            Intent(this, ICanActivity::class.java) // 할 수 있다 페이지로 변경
         } else {
             Intent(this, TrashKeywordActivity::class.java) // 감정 쓰레기통 페이지로 변경
         }

@@ -23,7 +23,7 @@ class MyPostHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         myCommentCountView.text = post.commentCount.toString()
         itemView.setOnClickListener{
             // 상세 보기 액티비티로 바꾸기
-            val intent = Intent(context, MainActivity::class.java).apply {
+            val intent = Intent(context, ViewPostActivity::class.java).apply {
                 putExtra("postId", post.id)
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
