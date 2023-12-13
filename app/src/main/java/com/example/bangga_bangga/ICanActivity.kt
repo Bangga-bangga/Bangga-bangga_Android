@@ -1,5 +1,6 @@
 package com.example.bangga_bangga
 
+import android.content.Intent
 import android.media.Image
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -8,18 +9,25 @@ import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 
 class ICanActivity : AppCompatActivity() {
-    lateinit var iCanCharacter: ImageView
-    lateinit var iCanText: TextView
-    var touchCount = 0
-    var originalBottomMargin = 0
+    private lateinit var iCanCharacter: ImageView
+    private lateinit var iCanText: TextView
+    private lateinit var iCanLayout: ConstraintLayout
+    private lateinit var popUpLayout: LinearLayout
+    private lateinit var convertHomeBtn: Button
+    private var touchCount = 0
+    private var originalBottomMargin = 0
 
     private var mediaPlayer: MediaPlayer? = null
     private var effectPlayer: MediaPlayer? = null
+    private var popEffectPlayer: MediaPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,19 +42,46 @@ class ICanActivity : AppCompatActivity() {
 
         mediaPlayer = MediaPlayer.create(this, R.raw.i_can_bgm)
         effectPlayer = MediaPlayer.create(this, R.raw.i_can_effect)
+        popEffectPlayer = MediaPlayer.create(this, R.raw.pop_up_effect)
 
         mediaPlayer?.isLooping = true
         mediaPlayer?.start()
 
-        iCanCharacter = findViewById<ImageView>(R.id.i_can_character_img)
-        iCanText = findViewById<TextView>(R.id.i_can_text)
+        iCanCharacter = findViewById(R.id.i_can_character_img)
+        iCanText = findViewById(R.id.i_can_text)
+        iCanLayout = findViewById(R.id.i_can_layout)
+        popUpLayout = findViewById(R.id.pop_up_layout)
+        convertHomeBtn = findViewById(R.id.convert_home_btn)
 
         val layoutParams = iCanCharacter.layoutParams as ViewGroup.MarginLayoutParams
         originalBottomMargin = layoutParams.bottomMargin
 
-        iCanCharacter.setOnTouchListener { v, event ->
+        iCanCharacter.setOnTouchListener { _, event ->
             handleTouch(event)
         }
+
+        fun convertToHome() {
+            mediaPlayer?.release()
+            mediaPlayer = null
+
+            effectPlayer?.release()
+            effectPlayer = null
+
+            popEffectPlayer?.release()
+            popEffectPlayer = null
+
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+        }
+
+        convertHomeBtn.setOnClickListener {
+            convertToHome()
+        }
+
+    }
+
+    private fun playPopEffect() {
+        popEffectPlayer?.start()
     }
 
     private fun handleTouch(event: MotionEvent): Boolean {
@@ -54,9 +89,6 @@ class ICanActivity : AppCompatActivity() {
             MotionEvent.ACTION_DOWN -> {
                 iCanCharacter.setImageResource(R.drawable.i_can_character_a)
                 iCanText.visibility = View.VISIBLE
-
-
-                touchCount += 1
 
                 val scale = 1f + 0.08f * touchCount
                 iCanCharacter.scaleX = scale
@@ -70,9 +102,16 @@ class ICanActivity : AppCompatActivity() {
                 updateCharacterBottomMargin(layoutParams, scale)
             }
             MotionEvent.ACTION_UP -> {
+                touchCount += 1
                 playSound()
                 iCanText.visibility = View.INVISIBLE
                 iCanCharacter.setImageResource(R.drawable.i_can_character_b)
+
+                if (touchCount == 50) {
+                    playPopEffect()
+                    popUpLayout.visibility = View.VISIBLE
+                    iCanLayout.visibility = View.GONE
+                }
 
             }
         }
@@ -89,6 +128,8 @@ class ICanActivity : AppCompatActivity() {
         mediaPlayer = null
         effectPlayer?.release()
         effectPlayer = null
+        popEffectPlayer?.release()
+        popEffectPlayer = null
     }
 
     private fun updateCharacterBottomMargin(layoutParams: ViewGroup.MarginLayoutParams, scale: Float) {
