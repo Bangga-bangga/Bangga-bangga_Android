@@ -3,9 +3,7 @@ package com.example.bangga_bangga
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bangga_bangga.model.MyPostModel
 import com.example.bangga_bangga.model.PreviewModel
-import com.example.bangga_bangga.model.UserInfoModel
 
 class MyPostAdapter(private val posts: MutableList<PreviewModel> = mutableListOf()) :
     RecyclerView.Adapter<MyPostHolder>() {

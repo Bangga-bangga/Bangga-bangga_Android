@@ -70,14 +70,14 @@ class FragmentMyPageTab : Fragment() {
                     }
 
                 } else {
-                    Log.d("tag","서버 응답 없음")
+                    Log.d("에러 코드", response.code().toString())
                     // Handle unsuccessful response
                 }
             }
 
             override fun onFailure(call: Call<UserInfoResponse>, t: Throwable) {
                 // Handle failure
-                Log.e("에러",t.message.toString())
+                Log.e("요청 실패 에러 메시지",t.message.toString())
             }
         })
 

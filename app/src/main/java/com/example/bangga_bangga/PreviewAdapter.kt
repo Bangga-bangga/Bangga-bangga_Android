@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bangga_bangga.model.PreviewModel
 
+
 class PreviewAdapter(private val posts: MutableList<PreviewModel> = mutableListOf()) :
     RecyclerView.Adapter<PreviewHolder>() {
 
@@ -25,4 +26,6 @@ class PreviewAdapter(private val posts: MutableList<PreviewModel> = mutableListO
         posts.addAll(newPosts)
         notifyDataSetChanged()
     }
+
 }
+

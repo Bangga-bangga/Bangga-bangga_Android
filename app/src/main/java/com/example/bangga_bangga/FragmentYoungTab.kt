@@ -19,11 +19,12 @@ class FragmentYoungTab: Fragment() {
     private var posts: MutableList<PreviewModel> = mutableListOf()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val previewAdapter = PreviewAdapter(posts)
 
         val view = inflater.inflate(R.layout.fragment_young, container, false)
         recyclerView = view.findViewById(R.id.recyclerView_young)
         recyclerView.layoutManager = LinearLayoutManager(context)
-        adapter = PreviewAdapter(posts)
+        adapter = previewAdapter
         recyclerView.adapter = adapter
 
         fetchDataFromServer() // 서버에서 데이터를 가져옴
@@ -44,14 +45,14 @@ class FragmentYoungTab: Fragment() {
                         adapter.notifyDataSetChanged()
                     }
                 } else {
-                    Log.d("tag","서버 응답 없음")
+                    Log.d("에러 코드", response.code().toString())
                     // Handle unsuccessful response
                 }
             }
 
             override fun onFailure(call: Call<PreviewPostsResponse>, t: Throwable) {
                 // Handle failure
-                Log.e("에러",t.message.toString())
+                Log.e("요청 실패 에러 메시지",t.message.toString())
             }
         })
     }

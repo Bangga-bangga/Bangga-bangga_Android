@@ -16,8 +16,10 @@ import android.view.View
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bangga_bangga.model.PreviewModel
 import com.example.bangga_bangga.model.UserInfoModel
 import com.google.android.material.tabs.TabLayout
@@ -66,7 +68,7 @@ interface PreviewAdultsPostsService {
                     val newRequest = chain.request().newBuilder()
                         .addHeader("Authorization", "$token")
                         .build()
-                    Log.d("url", newRequest.toString())
+                    Log.d("요청", newRequest.toString())
                     chain.proceed(newRequest)
                 })
                 .build()
@@ -101,7 +103,7 @@ interface PreviewMzsPostsService {
                     val newRequest = chain.request().newBuilder()
                         .addHeader("Authorization", "$token")
                         .build()
-                    Log.d("url", newRequest.toString())
+                    Log.d("요청", newRequest.toString())
                     chain.proceed(newRequest)
                 })
                 .build()
@@ -151,7 +153,7 @@ interface UserInfoService {
                     val newRequest = chain.request().newBuilder()
                         .addHeader("Authorization", "$token")
                         .build()
-                    Log.d("url", newRequest.toString())
+                    Log.d("요청", newRequest.toString())
                     chain.proceed(newRequest)
                 })
                 .build()
@@ -201,6 +203,8 @@ class HomeActivity : AppCompatActivity(), OnBannerClickListener {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true) // 뒤로가기 버튼, 디폴트로 true만 해도 백버튼이 생김
         supportActionBar?.title = ""
+
+
 
         // 게시글 미리보기 탭
         for(i in tabSelectors.indices) {
