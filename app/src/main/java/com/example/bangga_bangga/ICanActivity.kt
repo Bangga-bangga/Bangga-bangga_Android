@@ -13,10 +13,10 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
 class ICanActivity : AppCompatActivity() {
-    lateinit var iCanCharacter: ImageView
-    lateinit var iCanText: TextView
-    var touchCount = 0
-    var originalBottomMargin = 0
+    private lateinit var iCanCharacter: ImageView
+    private lateinit var iCanText: TextView
+    private var touchCount = 0
+    private var originalBottomMargin = 0
 
     private var mediaPlayer: MediaPlayer? = null
     private var effectPlayer: MediaPlayer? = null
@@ -38,15 +38,16 @@ class ICanActivity : AppCompatActivity() {
         mediaPlayer?.isLooping = true
         mediaPlayer?.start()
 
-        iCanCharacter = findViewById<ImageView>(R.id.i_can_character_img)
-        iCanText = findViewById<TextView>(R.id.i_can_text)
+        iCanCharacter = findViewById(R.id.i_can_character_img)
+        iCanText = findViewById(R.id.i_can_text)
 
         val layoutParams = iCanCharacter.layoutParams as ViewGroup.MarginLayoutParams
         originalBottomMargin = layoutParams.bottomMargin
 
-        iCanCharacter.setOnTouchListener { v, event ->
+        iCanCharacter.setOnTouchListener { _, event ->
             handleTouch(event)
         }
+
     }
 
     private fun handleTouch(event: MotionEvent): Boolean {
