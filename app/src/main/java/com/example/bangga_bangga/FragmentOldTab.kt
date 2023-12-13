@@ -1,51 +1,62 @@
 package com.example.bangga_bangga
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bangga_bangga.model.PreviewModel
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class FragmentOldTab : Fragment(){
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: PreviewAdapter
+    private var posts: MutableList<PreviewModel> = mutableListOf()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
         val view = inflater.inflate(R.layout.fragment_old, container, false)
-
-        // 예시 데이터 생성
-        val posts = mutableListOf(
-            PreviewModel("제목1", "첫 번째 글", "닉네임1", 0,0),
-            PreviewModel("제목2", "두 번째 글", "닉네임2",0,0),
-            PreviewModel("제목3", "세 번째 글", "닉네임3",0,0),
-            PreviewModel("제목3", "세 번째 글", "닉네임3",0,0),
-            PreviewModel("제목3", "세 번째 글", "닉네임3",0,0),
-            PreviewModel("제목3", "세 번째 글", "닉네임3",0,0)
-        )
-
         recyclerView = view.findViewById(R.id.recyclerView_old)
         recyclerView.layoutManager = LinearLayoutManager(context)
         adapter = PreviewAdapter(posts)
         recyclerView.adapter = adapter
-
-//        fetchDataFromServer() // 서버에서 데이터를 가져옴
+        fetchDataFromServer() // 서버에서 데이터를 가져옴
         return view
     }
     private fun fetchDataFromServer() {
-        // 여기서 서버에서 데이터를 가져오는 코드를 구현하고,
-        // 가져온 데이터를 Post 객체 리스트로 만듭니다.
+        val previewPostsService = PreviewAdultsPostsService.createAdultPost(requireContext())
+        val call = previewPostsService.getAdultPosts(100, 0)
+        call.enqueue(object : Callback<PreviewPostsResponse> {
+            override fun onResponse(call: Call<PreviewPostsResponse>, response: Response<PreviewPostsResponse>) {
+                if (response.isSuccessful) {
+                    val postsResponse = response.body()
+                    Log.d("게시판 미리보기", response.body().toString())
 
-        // 예시 데이터 생성
-        val posts = listOf(
-            PreviewModel("제목1", "첫 번째 글", "닉네임1", 0,0),
-            PreviewModel("제목2", "두 번째 글", "닉네임2",0,0),
-            PreviewModel("제목3", "세 번째 글", "닉네임3",0,0)
-        )
+                    postsResponse?.posts?.let { posts ->
+                        this@FragmentOldTab.posts = posts.toMutableList()
+                        adapter.setPosts(posts)
+                        adapter.notifyDataSetChanged()
 
-        adapter.setPosts(posts)
+                    }
+
+                } else {
+                    Log.d("에러 코드", response.code().toString())
+                    // Handle unsuccessful response
+                }
+            }
+
+            override fun onFailure(call: Call<PreviewPostsResponse>, t: Throwable) {
+                // Handle failure
+                Log.e("요청 실패 에러 메시지",t.message.toString())
+            }
+        })
     }
+
 }

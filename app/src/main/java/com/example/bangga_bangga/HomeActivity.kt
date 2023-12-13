@@ -1,5 +1,6 @@
 package com.example.bangga_bangga
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 
@@ -9,17 +10,164 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.bangga_bangga.databinding.ActivityHomeBinding
 //import java.util.logging.Handler
 import android.os.Handler
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.bangga_bangga.model.PreviewModel
+import com.example.bangga_bangga.model.UserInfoModel
 import com.google.android.material.tabs.TabLayout
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.Path
+import retrofit2.http.Query
+
 
 interface OnBannerClickListener {
     fun onBannerClick(position: Int)
 }
+
+data class PreviewPostsResponse(
+    val posts: List<PreviewModel>?,
+    val totalPageCount: Int
+)
+
+interface PreviewAdultsPostsService {
+    @GET("/adult/posts")
+    fun getAdultPosts(
+        @Query("size") size: Int,
+        @Query("page") page: Int
+    ): Call<PreviewPostsResponse>
+
+    companion object {
+        private const val BASE_URL = "http://ec2-13-125-135-255.ap-northeast-2.compute.amazonaws.com:8080/"
+        val gson: Gson = GsonBuilder().setLenient().create();
+
+        fun createAdultPost(context: Context): PreviewAdultsPostsService {
+            val prefToken =  context.getSharedPreferences("userToken", Context.MODE_PRIVATE)
+            val token = prefToken.getString("token", null)
+
+            //헤더에 Authorization 토큰 넣기
+            val client = OkHttpClient.Builder()
+                .addInterceptor(Interceptor { chain ->
+                    val newRequest = chain.request().newBuilder()
+                        .addHeader("Authorization", "$token")
+                        .build()
+                    Log.d("요청", newRequest.toString())
+                    chain.proceed(newRequest)
+                })
+                .build()
+
+            //헤더와 함께 요청
+            return Retrofit.Builder().baseUrl(BASE_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create(gson)).build()
+                .create(PreviewAdultsPostsService::class.java)
+        }
+    }
+}
+
+interface PreviewMzsPostsService {
+    @GET("/mz/posts")
+    fun getMzPosts(
+        @Query("size") size: Int,
+        @Query("page") page: Int
+    ): Call<PreviewPostsResponse>
+
+    companion object {
+        private const val BASE_URL = "http://ec2-13-125-135-255.ap-northeast-2.compute.amazonaws.com:8080/"
+        val gson: Gson = GsonBuilder().setLenient().create();
+
+        fun createMzPost(context: Context): PreviewMzsPostsService {
+            val prefToken =  context.getSharedPreferences("userToken", Context.MODE_PRIVATE)
+            val token = prefToken.getString("token", null)
+
+            //헤더에 Authorization 토큰 넣기
+            val client = OkHttpClient.Builder()
+                .addInterceptor(Interceptor { chain ->
+                    val newRequest = chain.request().newBuilder()
+                        .addHeader("Authorization", "$token")
+                        .build()
+                    Log.d("요청", newRequest.toString())
+                    chain.proceed(newRequest)
+                })
+                .build()
+
+            //헤더와 함께 요청
+            return Retrofit.Builder().baseUrl(BASE_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create(gson)).build()
+                .create(PreviewMzsPostsService::class.java)
+        }
+    }
+}
+
+data class UserInfoResponse(
+    val email: String,
+    val category: String,
+    val nickname: String,
+    val age: Int,
+    val myPost: MyPost,
+    val totalPageCount: Int
+)
+
+data class MyPost(
+    val posts: List<PreviewModel>,
+    val totalPageCount: Int
+)
+
+
+interface UserInfoService {
+    @GET("/user/me")
+    fun getUserInfo(
+        @Query("size") size: Int,
+        @Query("page") page: Int
+    ): Call<UserInfoResponse>
+
+    companion object {
+        private const val BASE_URL = "http://ec2-13-125-135-255.ap-northeast-2.compute.amazonaws.com:8080/"
+        val gson: Gson = GsonBuilder().setLenient().create();
+
+        fun createUserInfo(context: Context): UserInfoService {
+            val prefToken =  context.getSharedPreferences("userToken", Context.MODE_PRIVATE)
+            val token = prefToken.getString("token", null)
+
+            //헤더에 Authorization 토큰 넣기
+            val client = OkHttpClient.Builder()
+                .addInterceptor(Interceptor { chain ->
+                    val newRequest = chain.request().newBuilder()
+                        .addHeader("Authorization", "$token")
+                        .build()
+                    Log.d("요청", newRequest.toString())
+                    chain.proceed(newRequest)
+                })
+                .build()
+
+            //헤더와 함께 요청
+            return Retrofit.Builder().baseUrl(BASE_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create(gson)).build()
+                .create(UserInfoService::class.java)
+        }
+    }
+}
+
+
 
 class HomeActivity : AppCompatActivity(), OnBannerClickListener {
     private var currentPosition = Int.MAX_VALUE / 2
@@ -32,21 +180,22 @@ class HomeActivity : AppCompatActivity(), OnBannerClickListener {
         super.onCreate(savedInstanceState)
         homeBinding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(homeBinding.root)
-
-        val tabLayout = homeBinding.tabLayout
-        val frameLayout = homeBinding.frameLayout
-        // 탭2,3번 이미지 변경하기
-        val tabSelectors = intArrayOf(R.drawable.selector1, R.drawable.selector1, R.drawable.selector1)
-        val userType = "애"  // Authorization 확인
-
+        // 유저 카테 고리 가져오기
+        val prefCategory = getSharedPreferences("userCategory", Context.MODE_PRIVATE)
+        val userType = prefCategory.getString("category", null)
         // 초기 선택된 탭
         var selectedTab = 0
-        if(userType =="어른"){
-            getSupportFragmentManager().beginTransaction().add(R.id.frameLayout, FragmentYoungTab()).commit();
 
-        } else if(userType == "애"){
+        val tabLayout = homeBinding.tabLayout
+        // 탭2,3번 이미지 변경하기
+        val tabSelectors = intArrayOf(R.drawable.selector1, R.drawable.selector1, R.drawable.selector1)
+
+        if(userType =="adult"){
+            supportFragmentManager.beginTransaction().add(R.id.frameLayout, FragmentOldTab()).commit();
+
+        } else if(userType == "mz"){
             selectedTab = 1
-            getSupportFragmentManager().beginTransaction().add(R.id.frameLayout, FragmentOldTab()).commit();
+            supportFragmentManager.beginTransaction().add(R.id.frameLayout, FragmentYoungTab()).commit();
         }
 
         /** 툴바 생성 코드**/
@@ -55,10 +204,19 @@ class HomeActivity : AppCompatActivity(), OnBannerClickListener {
         supportActionBar?.setDisplayHomeAsUpEnabled(true) // 뒤로가기 버튼, 디폴트로 true만 해도 백버튼이 생김
         supportActionBar?.title = ""
 
+
+
         // 게시글 미리보기 탭
         for(i in tabSelectors.indices) {
             val tab = tabLayout.newTab()
-            tabLayout.addTab(tab, false)
+            if (userType == "adult" && i == 0){
+                tabLayout.addTab(tab, true)
+            } else if(userType == "mz" && i == 1){
+                tabLayout.addTab(tab, true)
+            } else {
+                tabLayout.addTab(tab, false)
+            }
+//            tabLayout.addTab(tab, false)
             tab.setCustomView(R.layout.selector_layout)
 
             val tabView = tab.customView
@@ -69,10 +227,6 @@ class HomeActivity : AppCompatActivity(), OnBannerClickListener {
                 tabImageView?.setImageResource(R.drawable.young_tab_unselected)
             }
 
-//            tabImageView?.setImageResource(tabSelectors[i])
-
-
-
             tabLayout.getTabAt(i)?.let { tab ->
                 tab.view?.setOnClickListener{
                     val prevSelectedTab = selectedTab
@@ -80,7 +234,7 @@ class HomeActivity : AppCompatActivity(), OnBannerClickListener {
                     val transaction = supportFragmentManager.beginTransaction()
                     when(i){
                         0 -> {
-                            transaction.replace(R.id.frameLayout, FragmentYoungTab())
+                            transaction.replace(R.id.frameLayout, FragmentOldTab())
                             // 선택된 탭 이미지 변경
                             val prevTabView = tabLayout.getTabAt(prevSelectedTab)?.customView
                             val prevTabImageView = prevTabView?.findViewById<ImageView>(R.id.tabImage)
@@ -89,13 +243,13 @@ class HomeActivity : AppCompatActivity(), OnBannerClickListener {
                             tabImageView?.setImageResource(R.drawable.young_tab_selected)
                         }
                         1 -> {
-                            // 선택된 탭 이미지 변경
+                            transaction.replace(R.id.frameLayout, FragmentYoungTab())
+//                             선택된 탭 이미지 변경
                             val prevTabView = tabLayout.getTabAt(prevSelectedTab)?.customView
                             val prevTabImageView = prevTabView?.findViewById<ImageView>(R.id.tabImage)
                             prevTabImageView?.setImageResource(R.drawable.young_tab_unselected)
                             // 현재 탭 이미지 변경
                             tabImageView?.setImageResource(R.drawable.young_tab_selected)
-                            transaction.replace(R.id.frameLayout, FragmentOldTab())
                         }
                         2 -> {
                             // 선택된 탭 이미지 변경
@@ -143,17 +297,18 @@ class HomeActivity : AppCompatActivity(), OnBannerClickListener {
 
         // 사용자 유형에 따라 게시글 작성 버튼 보이기 유무 변경
         val writePostBtn = homeBinding.writePostBtn
+
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 // 선택된 탭의 위치를 가져옴
                 val selectedTabPosition = tab?.position ?: 0
-                if(selectedTabPosition == 0 && userType == "어른"){
+                if(selectedTabPosition == 0 && userType == "adult"){
                     writePostBtn.visibility = View.VISIBLE
-                } else if(selectedTabPosition == 1 && userType == "어른"){
+                } else if(selectedTabPosition == 1 && userType == "adult"){
                     writePostBtn.visibility = View.GONE
-                } else if(selectedTabPosition == 0 && userType == "애"){
+                } else if(selectedTabPosition == 0 && userType == "mz"){
                     writePostBtn.visibility = View.GONE
-                } else if(selectedTabPosition == 1 && userType == "애"){
+                } else if(selectedTabPosition == 1 && userType == "mz"){
                     writePostBtn.visibility = View.VISIBLE
                 } else{
                     writePostBtn.visibility = View.GONE
@@ -172,6 +327,7 @@ class HomeActivity : AppCompatActivity(), OnBannerClickListener {
             startActivity(intent)
         }
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> { //toolbar의 back키 눌렀을 때 동작

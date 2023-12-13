@@ -1,9 +1,10 @@
 package com.example.bangga_bangga.model
 
 data class PreviewModel (
-    var title : String,
-    var content : String,
-    var nickname : String,
-    var like : Int,
-    var comment : Int
+    val id: Int,
+    val writer: String,
+    val title: String,
+    val createdAt: String,
+    val likeCount: Int,
+    val commentCount: Int
 )
