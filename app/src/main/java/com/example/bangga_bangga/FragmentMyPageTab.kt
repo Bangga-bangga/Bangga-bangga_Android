@@ -9,9 +9,10 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bangga_bangga.model.MyPostModel
+import com.example.bangga_bangga.api.UserInfoApi
 import com.example.bangga_bangga.model.PreviewModel
 import com.example.bangga_bangga.model.UserInfoModel
+import com.example.bangga_bangga.model.UserInfoResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -20,13 +21,6 @@ class FragmentMyPageTab : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: MyPostAdapter
     private var posts: MutableList<PreviewModel> = mutableListOf()
-    private var user = UserInfoModel(
-        email = "",
-        category = "",
-        nickname = "",
-        age = 0,
-        posts = mutableListOf()
-    )
 
     private lateinit var myNicknameTextView: TextView
     private lateinit var myEmailTextView: TextView
@@ -50,8 +44,9 @@ class FragmentMyPageTab : Fragment() {
         return view
     }
     private fun fetchDataFromServer() {
-        val userInfoService = UserInfoService.createUserInfo(requireContext())
+        val userInfoService = UserInfoApi.createUserInfo(requireContext())
         val call = userInfoService.getUserInfo(100,0)
+
         call.enqueue(object : Callback<UserInfoResponse> {
             override fun onResponse(call: Call<UserInfoResponse>, response: Response<UserInfoResponse>) {
                 if (response.isSuccessful) {

@@ -103,7 +103,7 @@ class NewPostActivity : AppCompatActivity() {
     }
 
     fun convertToMainActivity() {   /**임시로 메인 엑티비티로 해둠**/
-    val intent = Intent(this, MainActivity::class.java)
+    val intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
     }
 }

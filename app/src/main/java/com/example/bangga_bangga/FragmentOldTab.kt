@@ -10,7 +10,9 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bangga_bangga.api.PreviewAdultPostApi
 import com.example.bangga_bangga.model.PreviewModel
+import com.example.bangga_bangga.model.PreviewPostResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,10 +33,11 @@ class FragmentOldTab : Fragment(){
         return view
     }
     private fun fetchDataFromServer() {
-        val previewPostsService = PreviewAdultsPostsService.createAdultPost(requireContext())
-        val call = previewPostsService.getAdultPosts(100, 0)
-        call.enqueue(object : Callback<PreviewPostsResponse> {
-            override fun onResponse(call: Call<PreviewPostsResponse>, response: Response<PreviewPostsResponse>) {
+//        val previewPostsService = PreviewAdultsPostsService.createAdultPost(requireContext())
+        val previewPostsApi = PreviewAdultPostApi.createAdultPost(requireContext())
+        val call = previewPostsApi.getAdultPosts(100, 0)
+        call.enqueue(object : Callback<PreviewPostResponse> {
+            override fun onResponse(call: Call<PreviewPostResponse>, response: Response<PreviewPostResponse>) {
                 if (response.isSuccessful) {
                     val postsResponse = response.body()
                     Log.d("게시판 미리보기", response.body().toString())
@@ -52,7 +55,7 @@ class FragmentOldTab : Fragment(){
                 }
             }
 
-            override fun onFailure(call: Call<PreviewPostsResponse>, t: Throwable) {
+            override fun onFailure(call: Call<PreviewPostResponse>, t: Throwable) {
                 // Handle failure
                 Log.e("요청 실패 에러 메시지",t.message.toString())
             }

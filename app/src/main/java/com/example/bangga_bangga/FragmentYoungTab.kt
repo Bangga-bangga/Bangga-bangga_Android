@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bangga_bangga.api.PreviewMzPostApi
 import com.example.bangga_bangga.model.PreviewModel
+import com.example.bangga_bangga.model.PreviewPostResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,10 +34,10 @@ class FragmentYoungTab: Fragment() {
         return view
     }
     private fun fetchDataFromServer() {
-        val previewPostsService = PreviewMzsPostsService.createMzPost(requireContext())
+        val previewPostsService = PreviewMzPostApi.createMzPost(requireContext())
         val call = previewPostsService.getMzPosts(100, 0)
-        call.enqueue(object : Callback<PreviewPostsResponse> {
-            override fun onResponse(call: Call<PreviewPostsResponse>, response: Response<PreviewPostsResponse>) {
+        call.enqueue(object : Callback<PreviewPostResponse> {
+            override fun onResponse(call: Call<PreviewPostResponse>, response: Response<PreviewPostResponse>) {
                 if (response.isSuccessful) {
                     val postsResponse = response.body()
                     Log.d("게시판 미리보기", response.body().toString())
@@ -50,7 +52,7 @@ class FragmentYoungTab: Fragment() {
                 }
             }
 
-            override fun onFailure(call: Call<PreviewPostsResponse>, t: Throwable) {
+            override fun onFailure(call: Call<PreviewPostResponse>, t: Throwable) {
                 // Handle failure
                 Log.e("요청 실패 에러 메시지",t.message.toString())
             }
