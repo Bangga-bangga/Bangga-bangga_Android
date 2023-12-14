@@ -39,18 +39,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.587">
 
-        <!--        <ImageView-->
-        <!--            android:id="@+id/imageView"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="66dp"-->
-        <!--            android:background="#ffd964"-->
-        <!--            android:padding="10dp"-->
-        <!--            app:layout_constraintBottom_toTopOf="@+id/viewPagerAdvice"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toTopOf="parent"-->
-        <!--            app:srcCompat="@drawable/logo" />-->
-
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPagerAdvice"
             android:layout_width="match_parent"
@@ -78,28 +66,6 @@
             app:tabPaddingEnd="0dp"
             app:tabPaddingStart="0dp"
             app:tabPaddingTop="0dp">
-
-<!--            <com.google.android.material.tabs.TabItem-->
-<!--                android:id="@+id/tab1"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:background="@drawable/selector1">-->
-<!--                <ImageView -->
-<!--                    android:id="@+id/imageView1"-->
-<!--                    android:layout_width = "match_parent"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:src="@drawable/selector1"/>-->
-<!--            </com.google.android.material.tabs.TabItem>-->
-
-<!--            <com.google.android.material.tabs.TabItem-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:background="@drawable/selector2" />-->
-
-<!--            <com.google.android.material.tabs.TabItem-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:background="@drawable/selector1"/>-->
         </com.google.android.material.tabs.TabLayout>
 
         <LinearLayout
@@ -137,17 +103,6 @@
                 android:layout_marginBottom="20dp"
                 android:background="#FDF3DF">
 
-<!--                <ScrollView-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent">-->
-
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:orientation="vertical" >-->
-
-<!--                    </LinearLayout>-->
-<!--                </ScrollView>-->
             </FrameLayout>
         </LinearLayout>
 

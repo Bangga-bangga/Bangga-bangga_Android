@@ -10,33 +10,11 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.bangga_bangga.databinding.ActivityHomeBinding
 //import java.util.logging.Handler
 import android.os.Handler
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
-import android.widget.FrameLayout
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.bangga_bangga.model.PreviewModel
-import com.example.bangga_bangga.model.UserInfoModel
-import com.example.bangga_bangga.model.UserInfoResponse
 import com.google.android.material.tabs.TabLayout
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface OnBannerClickListener {
     fun onBannerClick(position: Int)
@@ -49,19 +27,21 @@ class HomeActivity : AppCompatActivity(), OnBannerClickListener {
     private val intervalTime = 3000.toLong()  // 몇 초 간격으로 페이지를 넘길건지
     private lateinit var homeBinding: ActivityHomeBinding // 바인딩 객체 선언
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         homeBinding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(homeBinding.root)
+        val tabLayout = homeBinding.tabLayout
         // 유저 카테 고리 가져오기
         val prefCategory = getSharedPreferences("userCategory", Context.MODE_PRIVATE)
         val userType = prefCategory.getString("category", null)
         // 초기 선택된 탭
         var selectedTab = 0
 
-        val tabLayout = homeBinding.tabLayout
         // 탭2,3번 이미지 변경하기
-        val tabSelectors = intArrayOf(R.drawable.selector1, R.drawable.selector2, R.drawable.selector3)
+//        val tabSelectors = intArrayOf(R.drawable.selector1, R.drawable.selector2, R.drawable.selector3)
+        val tabSelectors = intArrayOf(R.drawable.young_tab_unselected, R.drawable.old_tab_unselected, R.drawable.my_page_tab_unselected)
 
         if(userType =="adult"){
             supportFragmentManager.beginTransaction().add(R.id.frameLayout, FragmentOldTab()).commit();
@@ -82,23 +62,31 @@ class HomeActivity : AppCompatActivity(), OnBannerClickListener {
         // 게시글 미리보기 탭
         for(i in tabSelectors.indices) {
             val tab = tabLayout.newTab()
-            if (userType == "adult" && i == 0){
-                tabLayout.addTab(tab, true)
-            } else if(userType == "mz" && i == 1){
-                tabLayout.addTab(tab, true)
-            } else {
-                tabLayout.addTab(tab, false)
+            when {
+                userType == "adult" && i == 0 -> tabLayout.addTab(tab, true)
+                userType == "mz" && i == 1 -> tabLayout.addTab(tab, true)
+                else -> tabLayout.addTab(tab, false)
             }
-//            tabLayout.addTab(tab, false)
-            tab.setCustomView(R.layout.selector_layout)
+            tab.setCustomView(R.layout.tab_layout)
 
             val tabView = tab.customView
             val tabImageView = tabView?.findViewById<ImageView>(R.id.tabImage)
-//            if(i == selectedTab){
-//                tabImageView?.setImageResource(R.drawable.young_tab_selected)
-//            } else {
-//                tabImageView?.setImageResource(R.drawable.young_tab_unselected)
-//            }
+            when (i) {
+                selectedTab -> {
+                    when (i) {
+                        0 -> tabImageView?.setImageResource(R.drawable.young_tab_selected)
+                        1 -> tabImageView?.setImageResource(R.drawable.old_tab_selected)
+                        2 -> tabImageView?.setImageResource(R.drawable.my_page_tab_selected)
+                    }
+                }
+                else -> {
+                    when (i) {
+                        0 -> tabImageView?.setImageResource(R.drawable.young_tab_unselected)
+                        1 -> tabImageView?.setImageResource(R.drawable.old_tab_unselected)
+                        2 -> tabImageView?.setImageResource(R.drawable.my_page_tab_unselected)
+                    }
+                }
+            }
 
             tabLayout.getTabAt(i)?.let { tab ->
                 tab.view?.setOnClickListener{
@@ -108,30 +96,18 @@ class HomeActivity : AppCompatActivity(), OnBannerClickListener {
                     when(i){
                         0 -> {
                             transaction.replace(R.id.frameLayout, FragmentOldTab())
-                            // 선택된 탭 이미지 변경
-                            val prevTabView = tabLayout.getTabAt(prevSelectedTab)?.customView
-                            val prevTabImageView = prevTabView?.findViewById<ImageView>(R.id.tabImage)
-                            prevTabImageView?.setImageResource(R.drawable.young_tab_unselected)
-                            // 현재 탭 이미지 변경
+                            updateTabImages(prevSelectedTab)
                             tabImageView?.setImageResource(R.drawable.young_tab_selected)
                         }
                         1 -> {
                             transaction.replace(R.id.frameLayout, FragmentYoungTab())
-//                             선택된 탭 이미지 변경
-                            val prevTabView = tabLayout.getTabAt(prevSelectedTab)?.customView
-                            val prevTabImageView = prevTabView?.findViewById<ImageView>(R.id.tabImage)
-                            prevTabImageView?.setImageResource(R.drawable.old_tab_unselected)
-                            // 현재 탭 이미지 변경
+                            updateTabImages(prevSelectedTab)
                             tabImageView?.setImageResource(R.drawable.old_tab_selected)
                         }
                         2 -> {
-                            // 선택된 탭 이미지 변경
-                            val prevTabView = tabLayout.getTabAt(prevSelectedTab)?.customView
-                            val prevTabImageView = prevTabView?.findViewById<ImageView>(R.id.tabImage)
-                            prevTabImageView?.setImageResource(R.drawable.my_page_tab_unselected)
-                            // 현재 탭 이미지 변경
-                            tabImageView?.setImageResource(R.drawable.my_page_tab_selected)
                             transaction.replace(R.id.frameLayout, FragmentMyPageTab())
+                            updateTabImages(prevSelectedTab)
+                            tabImageView?.setImageResource(R.drawable.my_page_tab_selected)
                         }
                     }
                     transaction.commit()
@@ -201,10 +177,21 @@ class HomeActivity : AppCompatActivity(), OnBannerClickListener {
         }
     }
 
+    private fun updateTabImages(prevSelectedTab: Int) {
+        val tabLayout = homeBinding.tabLayout
+        val prevTabView = tabLayout.getTabAt(prevSelectedTab)?.customView
+        val prevTabImageView = prevTabView?.findViewById<ImageView>(R.id.tabImage)
+        when (prevSelectedTab) {
+            0 -> prevTabImageView?.setImageResource(R.drawable.young_tab_unselected)
+            1 -> prevTabImageView?.setImageResource(R.drawable.old_tab_unselected)
+            2 -> prevTabImageView?.setImageResource(R.drawable.my_page_tab_unselected)
+        }
+    }
+
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> { //toolbar의 back키 눌렀을 때 동작
-                // 액티비티 이동
                 finish()
                 return true
             }
