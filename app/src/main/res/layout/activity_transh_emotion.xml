@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        android:layout_gravity="top"
+        android:background="#FFD964"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="부정적인 감정을 쓰레기통에 버려보세요:)"
+        android:gravity="center"
+        android:paddingVertical="30dp"
+        android:background="#FEEEB2"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#2A2500"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/trash_emotion_layout"
+        android:visibility="visible">
+
+
+        <ImageView
+            android:id="@+id/trash_can_img"
+            android:layout_width="130dp"
+            android:layout_height="150dp"
+            android:layout_marginBottom="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/trash_can"
+            android:visibility="visible"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:id="@+id/pop_up_layout"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="420dp"
+            android:orientation="vertical"
+            android:background="@drawable/pop_up"
+            android:gravity="center_horizontal"
+            android:paddingVertical="30dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="정말 잘 하셨어요!"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#2A2500"
+                android:layout_marginBottom="30dp"/>
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/trash_can"
+                android:layout_marginBottom="30dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginBottom="30dp"
+                android:text="부정적인 감정들을 내려놓고,\n새로운 숨을 크게 들이마셔보세요.\n당신은 강하고,\n미래에는 더 밝은 순간들이 기다리고 있어요.\n자신을 믿고,\n긍정적인 에너지로 마음을 가득 채워보세요."/>
+
+            <Button
+                android:id="@+id/convert_home_btn"
+                android:layout_width="140dp"
+                android:layout_height="50dp"
+                android:text="메인화면으로"
+                android:textSize="16sp"
+                android:background="@drawable/green_btn"
+                android:textColor="#FFFFFF"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
