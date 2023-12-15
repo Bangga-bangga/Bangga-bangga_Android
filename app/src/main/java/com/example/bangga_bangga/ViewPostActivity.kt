@@ -12,7 +12,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.bangga_bangga.api.CommentApi
-import com.example.bangga_bangga.api.CommentRequest
 import com.example.bangga_bangga.api.ViewPostApi
 import com.example.bangga_bangga.api.LikeApi
 import com.example.bangga_bangga.model.CommentModel
@@ -69,7 +68,7 @@ class ViewPostActivity : AppCompatActivity() {
         commentSendBtn.setOnClickListener {
             commentField = findViewById(R.id.comment_field)
             if (commentField.text.isNotEmpty()) {
-                writeComment(postId, CommentRequest(commentField.text.toString()))
+                writeComment(postId, commentField.text.toString())
                 commentField.text.clear()
 
                 recreate()
@@ -118,7 +117,7 @@ class ViewPostActivity : AppCompatActivity() {
         }
     }
 
-    private fun writeComment(postId: Int, content: CommentRequest) {
+    private fun writeComment(postId: Int, content: String) {
         GlobalScope.launch(Dispatchers.Main) {
             try {
                 val commentService = CommentApi.create(this@ViewPostActivity)
@@ -168,7 +167,7 @@ class ViewPostActivity : AppCompatActivity() {
 
                 commentNickname.text = comment.nickname
                 commentCreateAt.text = comment.createdAt
-                commentContent.text = comment.content.toString()
+                commentContent.text = comment.content.substring(1, comment.content.length -1)
 
                 commentContainer.addView(commentView)
 
