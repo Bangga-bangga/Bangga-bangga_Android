@@ -126,8 +126,8 @@ class LoginActivity  : AppCompatActivity()  {
         return super.onOptionsItemSelected(item)
     }
 
-    fun convertToMainActivity() {   /**임시로 메인 엑티비티로 해둠**/
-        val intent = Intent(this, MainActivity::class.java)
+    fun convertToMainActivity() {
+        val intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
     }
 
