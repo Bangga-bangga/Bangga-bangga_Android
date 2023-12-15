@@ -18,7 +18,7 @@ interface CommentApi {
     @POST("/posts/{id}/comments")
     suspend fun comment(
         @Path("id") id: Int,
-        @Body request: CommentRequest
+        @Body content: String
     ): Response<CommentModel>
 
     companion object {
@@ -49,7 +49,3 @@ interface CommentApi {
 
 
 }
-
-data class CommentRequest(
-    @SerializedName("content") val content: String,
-)
