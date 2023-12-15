@@ -23,12 +23,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".TrashEmotionActivity" />
         <activity android:name=".RegisterActivity"/>
         <activity android:name=".HomeActivity"/>
         <activity android:name=".TrashKeywordActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".StartActivity" />
         <activity android:name=".NewPostActivity" />
+        <activity android:name=".ICanActivity"/>
+        <activity android:name=".ViewPostActivity"/>
     </application>
 
 </manifest>

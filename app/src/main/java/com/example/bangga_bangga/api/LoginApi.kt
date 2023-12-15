@@ -19,7 +19,7 @@ interface LoginApi {
 
 
     companion object {
-        private const val BASE_URL = "http:ec2-13-125-135-255.ap-northeast-2.compute.amazonaws.com:8080/"
+        private const val BASE_URL = "http://ec2-13-125-135-255.ap-northeast-2.compute.amazonaws.com:8080/"
         val gson: Gson = GsonBuilder().setLenient().create();
 
         fun create(): LoginApi {
