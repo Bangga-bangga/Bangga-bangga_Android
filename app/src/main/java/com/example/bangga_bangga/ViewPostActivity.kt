@@ -2,7 +2,9 @@ package com.example.bangga_bangga
 
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.MenuItem
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -23,6 +25,7 @@ class ViewPostActivity : AppCompatActivity() {
     private lateinit var likeCount: TextView
     private lateinit var commentCount: TextView
     private lateinit var createAt: TextView
+    private lateinit var commentContainer: LinearLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_post)
@@ -73,14 +76,30 @@ class ViewPostActivity : AppCompatActivity() {
         likeCount = findViewById(R.id.likeCount)
         commentCount = findViewById(R.id.commentCount)
         createAt = findViewById(R.id.createAt)
+        commentContainer = findViewById(R.id.comment_container)
 
-        postResponse?.let{
+        val inflater = LayoutInflater.from(this)
+
+        postResponse?.let {
             nickname.text = it.nickname
             title.text = it.title
             content.text = it.content
-            likeCount.text= "${it.likeCount}개의 좋아요"
+            likeCount.text = "${it.likeCount}개의 좋아요"
             commentCount.text = "${it.comments.size}개의 댓글"
             createAt.text = it.createdAt
+
+            for (comment in it.comments) {
+                val commentView = inflater.inflate(R.layout.item_comment, null)
+
+                val commentNickname = commentView.findViewById<TextView>(R.id.comment_nickname)
+                val commentCreateAt = commentView.findViewById<TextView>(R.id.comment_createAt)
+                val commentContent = commentView.findViewById<TextView>(R.id.comment_content)
+
+                commentNickname.text = comment.nickname
+                commentCreateAt.text = comment.createdAt
+                commentContent.text = comment.content
+
+            }
         }
     }
 
