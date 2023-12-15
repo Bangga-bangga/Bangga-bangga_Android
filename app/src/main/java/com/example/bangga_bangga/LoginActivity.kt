@@ -68,7 +68,7 @@ class LoginActivity  : AppCompatActivity()  {
                             Log.d("획득한 카테고리", category ?: "카테고리가 없습니다.")
 
                             Toast.makeText(this@LoginActivity, "로그인 성공", Toast.LENGTH_LONG).show()
-                            convertToMainActivity()
+                            convertToMainActivity(category)
                         }
                         401 -> {
                             Log.d("로그인 실패", "아이디나 비번이 올바르지 않습니다")
@@ -85,7 +85,7 @@ class LoginActivity  : AppCompatActivity()  {
                             runOnUiThread {
                                 Toast.makeText(
                                     this@LoginActivity,
-                                    "로그인 실패 : 서버 오류\n에러 메시지: 아이디가 올바르지 않습니다.",
+                                    "로그인 실패 : 아이디나 비번이 올바르지 않습니다.",
                                     Toast.LENGTH_LONG
                                 ).show()
                             }
@@ -126,8 +126,8 @@ class LoginActivity  : AppCompatActivity()  {
         return super.onOptionsItemSelected(item)
     }
 
-    fun convertToMainActivity() {   /**임시로 메인 엑티비티로 해둠**/
-        val intent = Intent(this, MainActivity::class.java)
+    fun convertToMainActivity(category: String?) {
+        val intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
     }
 
