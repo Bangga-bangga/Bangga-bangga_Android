@@ -5,15 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="#FEEEB2">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginLeft="1dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
         android:background="#FFD964"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
@@ -21,12 +21,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="378dp"
-        android:layout_height="695dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="17dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="@drawable/background_out_border">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -52,206 +48,206 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingVertical="15dp"
+                    android:paddingHorizontal="15dp">
 
                     <TextView
                         android:id="@+id/registerTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="128dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="128dp"
                         android:text="회원가입"
-                        android:textSize="25dp" />
+                        android:textSize="25sp"
+                        android:textColor="#2A2500"
+                        android:textStyle="bold"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="25dp"/>
 
                     <TextView
                         android:id="@+id/nicknameText"
-                        android:layout_width="126dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="14dp"
-                        android:layout_marginTop="50dp"
-                        android:layout_marginEnd="294dp"
                         android:text="닉네임"
-                        android:textSize="15dp" />
+                        android:textSize="15sp"
+                        android:textColor="#2A2500"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginStart="3dp"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        android:layout_gravity="center_horizontal">
 
                         <EditText
+                            android:layout_weight="1"
                             android:id="@+id/nicknameInput"
                             android:layout_width="230dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="13dp"
+                            android:layout_height="48dp"
+                            android:layout_marginRight="5dp"
                             android:ems="10"
                             android:hint="닉네임 입력"
                             android:inputType="text"
-                            android:textColor="#c0c0c0"
-                            android:textSize="13dp" />
+                            android:textColor="#2A2500"
+                            android:background="@drawable/edittext_border"
+                            android:padding="10dp"
+                            android:textSize="13sp" />
 
                         <Button
+                            android:layout_weight="1"
                             android:id="@+id/duplicationCheckBtn"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginEnd="13dp"
-                            android:backgroundTint="#FFD964"
+                            android:layout_height="45dp"
                             android:textColor="@color/white"
                             android:text="중복 확인"
-                            android:background="@drawable/register_button"/>
+                            android:background="@drawable/green_btn" />
                     </LinearLayout>
 
                     <TextView
                         android:id="@+id/duplicationCheckResultText"
                         android:layout_width="204dp"
                         android:layout_height="21dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="127dp"
-                        android:layout_marginBottom="3dp"
                         android:text="중복 확인 결과"
-                        android:textColor="#ec5353"
-                        android:visibility="invisible" />
+                        android:textColor="#EC5353"
+                        android:visibility="invisible"
+                        android:layout_marginBottom="5dp"/>
 
                     <TextView
                         android:id="@+id/emailText"
-                        android:layout_width="144dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="14dp"
-                        android:layout_marginTop="3dp"
-                        android:layout_marginEnd="294dp"
                         android:text="이메일"
-                        android:textSize="15dp" />
+                        android:textSize="15sp"
+                        android:textColor="#2A2500"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginStart="3dp"/>
 
                     <EditText
                         android:id="@+id/emailInput"
-                        android:layout_width="320dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="13dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginEnd="13dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
                         android:ems="10"
                         android:hint="이메일 입력"
                         android:inputType="textEmailAddress"
-                        android:textColor="#c0c0c0"
-                        android:textSize="13dp" />
+                        android:textColor="#2A2500"
+                        android:textSize="13sp"
+                        android:background="@drawable/edittext_border"
+                        android:padding="10dp"/>
 
                     <TextView
                         android:id="@+id/emailVaildationCheckResult"
-                        android:layout_width="304dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="128dp"
-                        android:layout_marginBottom="3dp"
                         android:text="이메일 입력 유효성 검사 결과 문구"
-                        android:textColor="#ec5353"
-                        android:visibility="invisible" />
+                        android:textColor="#EC5353"
+                        android:visibility="invisible"
+                        android:layout_marginBottom="5dp"/>
 
                     <TextView
                         android:id="@+id/passwordText"
-                        android:layout_width="123dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="14dp"
-                        android:layout_marginTop="3dp"
-                        android:layout_marginEnd="294dp"
                         android:text="비밀번호"
-                        android:textSize="15dp" />
+                        android:textSize="15sp"
+                        android:textColor="#2A2500"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginStart="3dp"/>
 
                     <EditText
                         android:id="@+id/passwordInput"
-                        android:layout_width="319dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="13dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginEnd="13dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
                         android:ems="10"
-                        android:inputType="textPassword" />
+                        android:inputType="textPassword"
+                        android:background="@drawable/edittext_border"
+                        android:padding="10dp"
+                        android:hint="비밀번호 입력"
+                        android:textColor="#2A2500"
+                        android:textSize="13sp"/>
 
                     <TextView
                         android:id="@+id/passwordVaildationCheckResult"
                         android:layout_width="301dp"
                         android:layout_height="21dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="131dp"
-                        android:layout_marginBottom="3dp"
                         android:text="비밀번호 입력 유효성 검사 결과 문구"
                         android:textColor="#ec5353"
-                        android:visibility="invisible" />
+                        android:visibility="invisible"
+                        android:layout_marginBottom="5dp"/>
 
                     <TextView
                         android:id="@+id/passwordCheckText"
-                        android:layout_width="120dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="14dp"
-                        android:layout_marginTop="3dp"
-                        android:layout_marginEnd="254dp"
-                        android:text="비밀번호 확인" />
+                        android:text="비밀번호 확인"
+                        android:textColor="#2A2500"
+                        android:textSize="15sp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginStart="3dp"/>
 
                     <EditText
                         android:id="@+id/passwordCheckInput"
-                        android:layout_width="321dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="13dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginEnd="13dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
                         android:ems="10"
-                        android:inputType="textPassword" />
+                        android:inputType="textPassword"
+                        android:background="@drawable/edittext_border"
+                        android:padding="10dp"
+                        android:hint="비밀번호 재입력"
+                        android:textColor="#2A2500"
+                        android:textSize="13sp"/>
 
                     <TextView
                         android:id="@+id/repasswordVaildationCheckResult"
-                        android:layout_width="301dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="131dp"
-                        android:layout_marginBottom="3dp"
                         android:text="비밀번호 일치 검사 결과 문구"
-                        android:textColor="#ec5353"
-                        android:visibility="invisible" />
+                        android:textColor="#EC5353"
+                        android:visibility="invisible"
+                        android:layout_marginBottom="5dp"/>
 
                     <TextView
                         android:id="@+id/textView6"
-                        android:layout_width="107dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="14dp"
-                        android:layout_marginTop="3dp"
-                        android:layout_marginEnd="309dp"
-                        android:text="나이" />
+                        android:text="나이"
+                        android:textColor="#2A2500"
+                        android:textSize="15sp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginStart="3dp"/>
 
                     <EditText
                         android:id="@+id/ageInput"
-                        android:layout_width="321dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="13dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginEnd="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
                         android:ems="10"
                         android:hint="나이 입력"
                         android:inputType="number"
                         android:maxLength="2"
-                        android:textColor="#c0c0c0"
-                        android:textSize="13dp" />
+                        android:textColor="#2A2500"
+                        android:textSize="13sp"
+                        android:background="@drawable/edittext_border"
+                        android:padding="10dp"/>
 
                     <TextView
                         android:id="@+id/ageVaildationCheckResult"
-                        android:layout_width="301dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
                         android:text="나이 입력 유효성 검사 결과 문구"
-                        android:textColor="#ec5353"
-                        android:visibility="invisible" />
+                        android:textColor="#EC5353"
+                        android:visibility="invisible"
+                        android:layout_marginBottom="12dp"/>
 
                     <Button
                         android:id="@+id/registerBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="242dp"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="15dp"
-                        android:backgroundTint="#FFD964"
                         android:textColor="@color/white"
-                        android:text="회원가입"
-                        android:background="@drawable/register_button"/>
+                        android:text="회원가입 🤗"
+                        android:paddingHorizontal="30dp"
+                        android:background="@drawable/green_btn"
+                        android:layout_marginBottom="2dp"
+                        android:layout_gravity="right"/>
 
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>

@@ -11,38 +11,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_margin="13dp"
             android:background="@drawable/preview_background"
-            android:padding="10dp">
+            android:padding="15dp"
+            android:layout_marginBottom="10dp">
 
             <ImageView
-                android:layout_width="98dp"
+                android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:layout_marginRight="15dp"
-                android:src="@drawable/user" />
+                android:src="@drawable/post_profile_img" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="15dp"
-                    android:text="닉네임 : "/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="15dp"
-                    android:text="이메일 :"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="15dp"
-                    android:text="나이 :"/>
-
-
-            </LinearLayout>
             <LinearLayout
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
@@ -51,22 +29,20 @@
                     android:id="@+id/myNicknameText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="15dp"
-                    android:layout_marginLeft="5dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
                     android:text="닉네임"/>
                 <TextView
                     android:id="@+id/myEmailText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="15dp"
-                    android:layout_marginLeft="5dp"
                     android:text="이메일"/>
                 <TextView
                     android:id="@+id/myAgeText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="15dp"
-                    android:layout_marginLeft="5dp"
                     android:text="나이"/>
             </LinearLayout>
 
@@ -76,22 +52,16 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="내가 작성한 글"
+            android:text="📃 내가 작성한 글️"
             android:textSize="20dp"
             android:textStyle="bold"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"/>
+            android:layout_marginBottom="10dp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="0dp"
-            android:layout_marginRight="13dp"
-            android:layout_marginLeft="13dp"
-            android:layout_marginBottom="13dp">
+            android:padding="0dp">
             <androidx.recyclerview.widget.RecyclerView
-                android:layout_margin="2dp"
                 android:id="@+id/recyclerView_myPage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

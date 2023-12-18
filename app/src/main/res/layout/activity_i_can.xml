@@ -20,7 +20,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text='캐릭터를 터치해 "나는 할 수 있다"를 외쳐보세요:)'
+        android:text='캐릭터를 터치해 "나는 할 수 있다"를 외쳐보세요! 😆'
         android:gravity="center"
         android:paddingVertical="30dp"
         android:background="#FEEEB2"

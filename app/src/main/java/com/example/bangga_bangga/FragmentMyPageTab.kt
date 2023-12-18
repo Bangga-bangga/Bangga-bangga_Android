@@ -53,9 +53,9 @@ class FragmentMyPageTab : Fragment() {
                     val userInfoResponse = response.body()
                     Log.d("응답", userInfoResponse.toString())
                     userInfoResponse?.let{ res ->
-                        myNicknameTextView.text = res.nickname
+                        myNicknameTextView.text = res.nickname + "님"
                         myEmailTextView.text = res.email
-                        myAgeTextView.text = res.age.toString()
+                        myAgeTextView.text = res.age.toString()+ "세🙌"
                     }
 
                     userInfoResponse?.myPost?.let { myPosts ->

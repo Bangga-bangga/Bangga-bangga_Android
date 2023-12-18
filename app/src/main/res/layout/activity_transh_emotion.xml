@@ -20,7 +20,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="부정적인 감정을 쓰레기통에 버려보세요:)"
+        android:text="부정적인 감정을 쓰레기통에 버려보세요 🙂"
         android:gravity="center"
         android:paddingVertical="30dp"
         android:background="#FEEEB2"
