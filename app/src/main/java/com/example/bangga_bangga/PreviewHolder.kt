@@ -20,8 +20,8 @@ class PreviewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(post: PreviewModel){
         postId.text = post.id.toString()
         titleTextView.text = post.title
-        likeCountView.text = post.likeCount.toString()
-        commentCountView.text = post.commentCount.toString()
+        likeCountView.text = post.likeCount.toString() + "개의 좋아요"
+        commentCountView.text = post.commentCount.toString() + "개의 댓글"
         nicknameView.text = post.writer
         itemView.setOnClickListener{
             // 상세 보기 액티비티로 바꾸기

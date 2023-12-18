@@ -3,14 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#FFFFFF">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginLeft="1dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
         android:background="#FFD964"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
@@ -24,26 +25,29 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="307dp"
-            android:layout_height="164dp"
-            app:srcCompat="@drawable/logo"
-            android:layout_marginBottom="100dp"/>
+            android:layout_width="300dp"
+            android:layout_height="140dp"
+            android:layout_marginBottom="150dp"
+            app:srcCompat="@drawable/logo" />
 
         <Button
             android:id="@+id/login_button"
-            android:layout_width="307dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="10dp"
-            android:background="#FFD964"
-            android:text="Login" />
+            android:layout_width="280dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/register_button"
+            android:textColor="#2A2500"
+            android:textSize="18sp"
+            android:text="로그인" />
 
         <Button
             android:id="@+id/sign_in_button"
-            android:layout_width="307dp"
-            android:layout_height="50dp"
-            android:background="#FFD964"
-            android:text="Sign in"
-            android:layout_marginTop="10dp"/>
+            android:layout_width="280dp"
+            android:layout_height="60dp"
+            android:background="@drawable/register_button"
+            android:text="회원가입"
+            android:textColor="#2A2500"
+            android:textSize="18sp"/>
 
     </LinearLayout>
 

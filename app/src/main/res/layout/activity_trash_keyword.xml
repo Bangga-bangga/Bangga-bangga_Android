@@ -38,7 +38,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="마음 속의 지우고 싶은 감정 키워드를 적어보세요 :)"
+            android:text="마음 속의 지우고 싶은 감정 키워드를 적어보세요!"
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="#2A2500"/>
@@ -67,7 +67,7 @@
                 android:id="@+id/input_keyword_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
-                android:text="Input"
+                android:text="입력"
                 android:background="@drawable/register_button" />
 
         </LinearLayout>
@@ -92,12 +92,12 @@
         android:id="@+id/go_empty_can"
         android:layout_width="180dp"
         android:layout_height="wrap_content"
-        android:text="감정 비우러 가기"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
         android:layout_marginBottom="80dp"
         android:background="@drawable/register_button"
-        android:textSize="18sp"
-        android:padding="15dp"/>
+        android:padding="15dp"
+        android:text="감정 비우러 가기🗑️"
+        android:textSize="18sp" />
 
 </RelativeLayout>

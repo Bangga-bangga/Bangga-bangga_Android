@@ -9,8 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
-        android:layout_marginStart="1dp"
-        android:layout_marginLeft="1dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
         android:background="#FFD964"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme" />
@@ -39,11 +39,12 @@
             <EditText
                 android:id="@+id/title"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@drawable/edittext_rounded_corner_rectangle"
+                android:layout_height="48dp"
+                android:background="@drawable/edittext_border"
+                android:padding="10dp"
                 android:ems="10"
                 android:hint="제목을 입력하세요"
-                android:inputType="text" />
+                android:inputType="text"/>
 
         </LinearLayout>
 
@@ -51,29 +52,23 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="@drawable/background_in_border"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             >
 
-            <ScrollView
+            <EditText
+                android:id="@+id/content"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="50dp">
-
-                <EditText
-                    android:id="@+id/content"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="내용을 입력하세요"
-                    android:background="@drawable/edittext_rounded_corner_rectangle"
-                    android:inputType="textMultiLine"
-                    android:gravity="top|start" />
-
-            </ScrollView>
+                android:layout_height="480dp"
+                android:background="@drawable/edittext_border"
+                android:padding="10dp"
+                android:textSize="13sp"
+                android:ems="10"
+                android:gravity="top|start"
+                android:hint="내용을 입력하세요"
+                android:inputType="textMultiLine" />
 
             <Button
                 android:id="@+id/post_button"
@@ -81,12 +76,14 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
-                android:background="#FFD964"
-                android:padding="10dp"
-                android:text="Post" />
-
+                android:background="@drawable/green_btn"
+                android:textColor="#FFFFFF"
+                android:paddingVertical="10dp"
+                android:paddingHorizontal="40dp"
+                android:text="게시하기📋" />
 
         </RelativeLayout>
+
 
     </LinearLayout>
 
